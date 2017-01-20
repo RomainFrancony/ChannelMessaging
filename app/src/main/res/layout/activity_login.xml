@@ -31,7 +31,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/txtLogin"
                 android:layout_column="35"
-                android:layout_span="7" />
+                android:layout_span="7"
+                android:text="rfran" />
         </TableRow>
 
         <TableRow
@@ -49,7 +50,8 @@
                 android:inputType="textPassword"
                 android:ems="10"
                 android:id="@+id/txtPassword"
-                android:layout_column="41" />
+                android:layout_column="41"
+                android:text="romainfrancony" />
         </TableRow>
 
         <TableRow

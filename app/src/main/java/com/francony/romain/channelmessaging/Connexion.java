@@ -18,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,29 +27,42 @@ import javax.net.ssl.HttpsURLConnection;
 /**
  * Created by franconr on 20/01/2017.
  */
-public class Connexion extends AsyncTask<Long,Integer, String> {
-    private Context myContext;
-    public Connexion(Context myContext)
+public class Connexion extends AsyncTask<Void,Integer, String> {
+
+    private ArrayList<OnDowloadCompleteListener> listeners = new ArrayList<OnDowloadCompleteListener>();
+    public void setOnNewsUpdateListener (OnDowloadCompleteListener listener)
     {
-        this.myContext = myContext;
+        this.listeners.add(listener);
     }
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        Toast.makeText(myContext, "Connexion en cours", Toast.LENGTH_SHORT).show();
+
+    private String URL;
+    private HashMap<String,String> parmetres;
+
+    public Connexion(String url){
+        this.URL=url;
+    }
+
+    public HashMap<String, String> getParmetres() {
+        return parmetres;
+    }
+
+    public void setParmetres(HashMap<String, String> parmetres) {
+        this.parmetres = parmetres;
     }
 
     @Override
-    protected String doInBackground(Long... arg0) {
-        HashMap<String,String> params = new HashMap<>();
-        params.put("username","rfran");
-        params.put("password","romainfrancony");
-        String result = performPostCall("http://www.raphaelbischof.fr/messaging/?function=connect",params);
-        System.out.println(result);
-        Gson gson = new Gson();
-        Response retour = gson.fromJson(result,Response.class);
+    protected String doInBackground(Void...arg0) {
+       return performPostCall(this.URL,this.parmetres);
+    }
 
-       return retour.getResponse();
+
+    @Override
+    protected void onPostExecute(String result) {
+
+            for (OnDowloadCompleteListener oneListener : listeners)
+            {
+                oneListener.onDownloadComplete(result);
+            }
     }
 
 
