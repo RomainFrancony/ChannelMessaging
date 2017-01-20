@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">"ChannelMessaging "</string>
-    <string name="title_activity_channel">Channel</string>
+    <string name="app_name">"Material Chat "</string>
+    <string name="title_activity_channel">Choisir un channel</string>
 </resources>

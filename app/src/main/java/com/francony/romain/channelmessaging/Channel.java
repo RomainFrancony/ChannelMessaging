@@ -7,14 +7,22 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.HashMap;
+import com.google.gson.Gson;
 
-public class Channel extends AppCompatActivity implements OnDowloadCompleteListener {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+public class Channel extends AppCompatActivity implements OnDowloadCompleteListener, AdapterView.OnItemClickListener {
 
     private String token;
     private Connexion connexion;
+    private ListView listView;
 
 
     @Override
@@ -23,23 +31,40 @@ public class Channel extends AppCompatActivity implements OnDowloadCompleteListe
         setContentView(R.layout.activity_channel);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        listView = (ListView) findViewById(R.id.channels);
+        listView.setOnItemClickListener(this);
         connexion = new Connexion("http://www.raphaelbischof.fr/messaging/?function=getchannels");
         HashMap<String,String> params = new HashMap<>();
-
         SharedPreferences settings = getSharedPreferences(LoginActivity.STOCKAGE, 0);
-
         params.put("accesstoken", settings.getString("token", "hello"));
         connexion.setParmetres(params);
         connexion.setOnNewsUpdateListener(Channel.this);
         connexion.execute();
-
-
-
-
     }
 
     @Override
     public void onDownloadComplete(String content) {
+        Gson gson = new Gson();
 
+        Channels listeChannels = gson.fromJson(content,Channels.class);
+
+        List<String> names = new ArrayList<String>();
+        for (ChannelClass c : listeChannels.getChannels()){
+            names.add(c.getName());
+        }
+
+        String[] stockArr = new String[listeChannels.getChannels().size()];
+        stockArr = listeChannels.getChannels().toArray(stockArr);
+
+
+
+        listView.setAdapter(new ListeArrayAdapter(getApplicationContext(),stockArr));
+    }
+
+
+    //On click item
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Toast.makeText(getApplicationContext(),"J'ai sélectionné l'item "+position,Toast.LENGTH_SHORT).show();
     }
 }
