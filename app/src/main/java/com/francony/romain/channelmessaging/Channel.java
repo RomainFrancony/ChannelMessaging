@@ -1,5 +1,6 @@
 package com.francony.romain.channelmessaging;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,11 +11,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -45,26 +49,20 @@ public class Channel extends AppCompatActivity implements OnDowloadCompleteListe
     @Override
     public void onDownloadComplete(String content) {
         Gson gson = new Gson();
-
         Channels listeChannels = gson.fromJson(content,Channels.class);
-
-        List<String> names = new ArrayList<String>();
-        for (ChannelClass c : listeChannels.getChannels()){
-            names.add(c.getName());
-        }
-
-        String[] stockArr = new String[listeChannels.getChannels().size()];
-        stockArr = listeChannels.getChannels().toArray(stockArr);
-
-
-
-        listView.setAdapter(new ListeArrayAdapter(getApplicationContext(),stockArr));
+        ChannelClass[] names = new ChannelClass[listeChannels.getChannels().size()];
+        listView.setAdapter(new ListeArrayAdapter(getApplicationContext(),listeChannels.getChannels()));
     }
 
 
     //On click item
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(getApplicationContext(),"J'ai sélectionné l'item "+position,Toast.LENGTH_SHORT).show();
+        TextView idText = (TextView) findViewById(R.id.idChannel);
+        ChannelClass channel = (ChannelClass) idText.getTag();
+        Toast.makeText(getApplicationContext(),channel.getName(),Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplicationContext(),Chat.class);
+        intent.putExtra("channelID",channel.getChannelID());
+        startActivity(intent);
     }
 }

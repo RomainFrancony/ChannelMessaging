@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_collapseParallaxMultiplier="1.0"
+    android:padding="25px">
+
+    <TextView
+        android:id="@+id/channelName"
+        android:textColor="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:textSize="18sp"
+        android:textAllCaps="false" />
+
+    <TextView
+        android:id="@+id/nbConnect"
+        android:textColor="@android:color/black"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:text="nbConnect"
+        android:paddingTop="20px" />
+    <TextView
+        android:id="@+id/idChannel"
+        android:textColor="@android:color/black"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:text="id"
+        android:visibility="invisible"
+        />
+</LinearLayout>

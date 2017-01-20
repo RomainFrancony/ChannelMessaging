@@ -21,8 +21,12 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_channel" />
-
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="513dp"
+        android:id="@+id/channels"
+        android:foregroundGravity="bottom"
+        android:layout_gravity="bottom" />
 
 
 </android.support.design.widget.CoordinatorLayout>

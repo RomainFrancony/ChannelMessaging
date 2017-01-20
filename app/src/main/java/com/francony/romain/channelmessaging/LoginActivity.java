@@ -60,13 +60,11 @@ public class LoginActivity extends AppCompatActivity implements OnDowloadComplet
         if(retour.getResponse().equals("Ok")){
             Toast.makeText(getApplicationContext(), "Connexion réussie", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getApplicationContext(),Channel.class);
-
             SharedPreferences settings = getSharedPreferences(STOCKAGE, 0);
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("token",retour.getAccesstoken());
             editor.commit();
-        startActivity(intent);
-
+            startActivity(intent);
         }else{
             Toast.makeText(getApplicationContext(), "Connexion échouée", Toast.LENGTH_SHORT).show();
         }

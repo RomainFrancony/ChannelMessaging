@@ -20,7 +20,12 @@
         <activity
             android:name=".Channel"
             android:label="@string/title_activity_channel"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Chat"
+            android:label="@string/title_activity_chat"
+            android:theme ="@style/romainFull" >
+        </activity>
     </application>
 
 </manifest>
