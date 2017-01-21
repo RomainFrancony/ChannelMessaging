@@ -50,7 +50,6 @@ public class Channel extends AppCompatActivity implements OnDowloadCompleteListe
     public void onDownloadComplete(String content) {
         Gson gson = new Gson();
         Channels listeChannels = gson.fromJson(content,Channels.class);
-        ChannelClass[] names = new ChannelClass[listeChannels.getChannels().size()];
         listView.setAdapter(new ListeArrayAdapter(getApplicationContext(),listeChannels.getChannels()));
     }
 
@@ -60,9 +59,9 @@ public class Channel extends AppCompatActivity implements OnDowloadCompleteListe
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         TextView idText = (TextView) findViewById(R.id.idChannel);
         ChannelClass channel = (ChannelClass) idText.getTag();
-        Toast.makeText(getApplicationContext(),channel.getName(),Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getApplicationContext(),Chat.class);
         intent.putExtra("channelID",channel.getChannelID());
+        intent.putExtra("channelName",channel.getName());
         startActivity(intent);
     }
 }

@@ -23,6 +23,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Chat"
+            android:windowSoftInputMode="adjustPan"
             android:label="@string/title_activity_chat"
             android:theme ="@style/romainFull" >
         </activity>
