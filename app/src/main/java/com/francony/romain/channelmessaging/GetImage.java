@@ -9,10 +9,17 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.ImageView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Romain on 21/01/2017.
@@ -21,6 +28,7 @@ import java.io.InputStream;
 public class GetImage extends AsyncTask<String,Void,Bitmap> {
     private ImageView img;
     private int nb =0;
+    private String url ="";
 
 
     public GetImage(ImageView image){
@@ -29,6 +37,7 @@ public class GetImage extends AsyncTask<String,Void,Bitmap> {
 
     protected Bitmap doInBackground(String... urls) {
         String url = urls[0];
+        this.url = urls[0];
         Bitmap imageRetour = null;
         try {
             InputStream in = new java.net.URL(url).openStream();
@@ -37,11 +46,37 @@ public class GetImage extends AsyncTask<String,Void,Bitmap> {
             Log.e("Error", e.getMessage());
             e.printStackTrace();
         }
-        return imageRetour;
+
+
+
+        return getRoundedCornerBitmap(imageRetour);
     }
 
     protected void onPostExecute(Bitmap result) {
-        img.setImageBitmap(getRoundedCornerBitmap(result));
+
+
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(Environment.getExternalStorageDirectory()+this.url.substring(this.url.lastIndexOf("/")));
+            result.compress(Bitmap.CompressFormat.JPEG, 100, out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+            img.setImageBitmap(getRoundedCornerBitmap(result));
+
+
+
+
     }
 
     public static Bitmap getRoundedCornerBitmap(Bitmap bitmap) {

@@ -57,7 +57,7 @@ public class Channel extends AppCompatActivity implements OnDowloadCompleteListe
     //On click item
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        TextView idText = (TextView) findViewById(R.id.idChannel);
+        TextView idText = (TextView) view.findViewById(R.id.idChannel) ;
         ChannelClass channel = (ChannelClass) idText.getTag();
         Intent intent = new Intent(getApplicationContext(),Chat.class);
         intent.putExtra("channelID",channel.getChannelID());
