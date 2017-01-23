@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -37,14 +38,20 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
     private Connexion connexion;
     private ListView messagesListView;
     private EditText message;
+    private ArrayList<Message> messagesBackup = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
         toolbar.setTitle(getIntent().getStringExtra("channelName"));
+
+
+
+
         messagesListView = (ListView) findViewById(R.id.listMessages);
         message = (EditText) findViewById(R.id.message);
         messagesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -99,6 +106,7 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
                 params.put("accesstoken", settings.getString("token", "hello"));
                 params.put("channelid",getIntent().getStringExtra("channelID"));
                 params.put("message",message.getText().toString());
+
                 message.setText("");
                 connexion.setParmetres(params);
                 connexion.execute();
@@ -113,10 +121,20 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
         Gson gson = new Gson();
         Messages messages = gson.fromJson(content,Messages.class);
         Collections.reverse(messages.getMessages());
-        MessageAdapter adapter = new MessageAdapter(getApplicationContext(),messages.getMessages());
-        //adapter.add("New Item");
+
+        messages.getMessages().removeAll(this.messagesBackup);
+
+
+        MessageAdapter adapter = new MessageAdapter(getApplicationContext(), messages.getMessages());
+
         messagesListView.setAdapter(adapter);
+
+        Messages messages2 = gson.fromJson(content,Messages.class);
+        this.messagesBackup =  messages2.getMessages();
+
+
     }
+
 
 
 
