@@ -43,9 +43,9 @@ public class UserDataSource {
         return newUser;
     }
 
-    /*private User cursorToUser(Cursor cursor) {
-        //User user = new User(cursor.getString(0));
-
-    }*/
+    private User cursorToUser(Cursor cursor) {
+        User user = new User(cursor.getInt(0),cursor.getString(1),cursor.getString(2));
+        return user;
+    }
 
 }

@@ -33,6 +33,8 @@
 
     <ListView
         android:layout_width="match_parent"
+        android:transcriptMode="alwaysScroll"
+        android:stackFromBottom="true"
         android:layout_height="453dp"
         android:layout_gravity="center_vertical"
         android:id="@+id/listMessages" />

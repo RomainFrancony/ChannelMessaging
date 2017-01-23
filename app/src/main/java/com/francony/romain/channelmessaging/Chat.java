@@ -57,7 +57,8 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
 
                 builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // User clicked OK button
+                        UserDataSource database = new UserDataSource(getApplicationContext());
+
                     }
                 });
                 builder.setNegativeButton("Non", new DialogInterface.OnClickListener() {
@@ -83,6 +84,7 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
                 connexion.setParmetres(params);
                 connexion.setOnNewsUpdateListener(Chat.this);
                 connexion.execute();
+
             }
         },500,1000);
 
@@ -111,7 +113,9 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
         Gson gson = new Gson();
         Messages messages = gson.fromJson(content,Messages.class);
         Collections.reverse(messages.getMessages());
-        messagesListView.setAdapter(new MessageAdapter(getApplicationContext(),messages.getMessages()));
+        MessageAdapter adapter = new MessageAdapter(getApplicationContext(),messages.getMessages());
+        //adapter.add("New Item");
+        messagesListView.setAdapter(adapter);
     }
 
 

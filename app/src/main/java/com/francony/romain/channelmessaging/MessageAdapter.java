@@ -19,6 +19,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -51,6 +53,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         }
         TextView messageView = (TextView) convertView.findViewById(R.id.message);
         ImageView img = (ImageView) convertView.findViewById(R.id.img);
+        TextView date = (TextView) convertView.findViewById(R.id.dateText);
+        date.setText(message.getDate());
         messageView.setText(message.getMessage());
 
         File imgFile = new File(Environment.getExternalStorageDirectory()+message.getImageUrl().substring(message.getImageUrl().lastIndexOf("/")));
@@ -58,7 +62,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
         if(imgFile.exists()){
             Bitmap myBitmap =BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-            img.setImageBitmap(getRoundedCornerBitmap(myBitmap));
+            img.setImageBitmap(myBitmap);
         }else{
             new GetImage(img).execute(message.getImageUrl());
         }

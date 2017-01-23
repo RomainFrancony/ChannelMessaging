@@ -31,4 +31,11 @@ public class User {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public User(int userid, String username,String imageUrl)
+    {
+        this.setUserID(userid);
+        this.setImageUrl(imageUrl);
+        this.setUsername(username);
+    }
 }

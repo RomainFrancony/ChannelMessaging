@@ -72,7 +72,7 @@ public class GetImage extends AsyncTask<String,Void,Bitmap> {
         }
 
 
-            img.setImageBitmap(getRoundedCornerBitmap(result));
+            img.setImageBitmap(result);
 
 
 
