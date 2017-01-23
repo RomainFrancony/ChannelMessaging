@@ -54,7 +54,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         messageView.setText(message.getMessage());
 
         File imgFile = new File(Environment.getExternalStorageDirectory()+message.getImageUrl().substring(message.getImageUrl().lastIndexOf("/")));
-        System.out.println(Environment.getExternalStorageDirectory()+message.getImageUrl().substring(message.getImageUrl().lastIndexOf("/")));
+
 
         if(imgFile.exists()){
             Bitmap myBitmap =BitmapFactory.decodeFile(imgFile.getAbsolutePath());

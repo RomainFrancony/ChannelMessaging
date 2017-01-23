@@ -1,5 +1,8 @@
 package com.francony.romain.channelmessaging;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -15,6 +18,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -43,6 +47,29 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
         toolbar.setTitle(getIntent().getStringExtra("channelName"));
         messagesListView = (ListView) findViewById(R.id.listMessages);
         message = (EditText) findViewById(R.id.message);
+        messagesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(Chat.this);
+
+                builder.setMessage("ajouter ami")
+                        .setTitle("Ajouter en ami");
+
+                builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked OK button
+                    }
+                });
+                builder.setNegativeButton("Non", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
 
 
         new Timer().scheduleAtFixedRate(new TimerTask() {
@@ -74,6 +101,7 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
                 connexion.setParmetres(params);
                 connexion.execute();
 
+
             }
         });
     }
@@ -84,11 +112,7 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
         Messages messages = gson.fromJson(content,Messages.class);
         Collections.reverse(messages.getMessages());
         messagesListView.setAdapter(new MessageAdapter(getApplicationContext(),messages.getMessages()));
-
     }
-
-
-
 
 
 

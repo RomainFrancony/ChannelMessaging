@@ -18,7 +18,8 @@
             android:layout_weight="0.54"
             android:adjustViewBounds="false"
             android:background="@android:color/black"
-            android:minHeight="35px" />
+            android:minHeight="35px"
+            android:maxWidth="120px" />
 
         <TextView
             android:text="TextView"

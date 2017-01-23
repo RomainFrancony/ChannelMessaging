@@ -27,12 +27,27 @@ public class Channel extends AppCompatActivity implements OnDowloadCompleteListe
     private String token;
     private Connexion connexion;
     private ListView listView;
+    private FloatingActionButton fab;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_channel);
+
+
+
+        fab =(FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),Friend.class);
+                startActivity(intent);
+            }
+        });
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         listView = (ListView) findViewById(R.id.channels);
