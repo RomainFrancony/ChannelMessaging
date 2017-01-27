@@ -63,6 +63,7 @@ public class LoginActivity extends AppCompatActivity implements OnDowloadComplet
             SharedPreferences settings = getSharedPreferences(STOCKAGE, 0);
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("token",retour.getAccesstoken());
+            editor.putString("login",login.getText().toString());
             editor.commit();
             startActivity(intent);
         }else{

@@ -52,45 +52,25 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.message_item, parent, false);
         }
         TextView messageView = (TextView) convertView.findViewById(R.id.message);
+        TextView name = (TextView) convertView.findViewById(R.id.username);
         ImageView img = (ImageView) convertView.findViewById(R.id.img);
         TextView date = (TextView) convertView.findViewById(R.id.dateText);
         date.setText(message.getDate());
         messageView.setText(message.getMessage());
-
+        name.setText(message.getUsername());
         File imgFile = new File(Environment.getExternalStorageDirectory()+message.getImageUrl().substring(message.getImageUrl().lastIndexOf("/")));
 
 
         if(imgFile.exists()){
-            Bitmap myBitmap =BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             img.setImageBitmap(myBitmap);
         }else{
             new GetImage(img).execute(message.getImageUrl());
         }
-
         return convertView;
     }
 
 
 
-    public static Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
 
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
-        final float roundPx = 120;
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
-        return output;
-    }
 }

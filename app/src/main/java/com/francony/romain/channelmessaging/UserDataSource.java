@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -16,8 +18,7 @@ public class UserDataSource {
     // Database fields
     private SQLiteDatabase database;
     private FriendsDB dbHelper;
-    private String[] allColumns = { FriendsDB.KEY_USERID,FriendsDB.KEY_USERNAME,
-            FriendsDB.KEY_IMAGEURL };
+    private String[] allColumns = { FriendsDB.KEY_USERID,FriendsDB.KEY_USERNAME, FriendsDB.KEY_IMAGEURL };
     public UserDataSource(Context context) {
         dbHelper = new FriendsDB(context);
     }
@@ -34,9 +35,7 @@ public class UserDataSource {
         values.put(FriendsDB.KEY_USERNAME, username);
         values.put(FriendsDB.KEY_IMAGEURL,imageurl );
         database.insert(FriendsDB.USER_TABLE_NAME, null, values);
-        Cursor cursor = database.query(FriendsDB.USER_TABLE_NAME,
-                allColumns, FriendsDB.KEY_USERID + " = \"" + Integer.toString(userid)+"\"", null,
-                null, null, null);
+        Cursor cursor = database.query(FriendsDB.USER_TABLE_NAME, allColumns, FriendsDB.KEY_USERID + " = \"" + Integer.toString(userid)+"\"", null, null, null, null);
         cursor.moveToFirst();
         User newUser = cursorToUser(cursor);
         cursor.close();
@@ -46,6 +45,21 @@ public class UserDataSource {
     private User cursorToUser(Cursor cursor) {
         User user = new User(cursor.getInt(0),cursor.getString(1),cursor.getString(2));
         return user;
+    }
+
+
+    public List<User> getAllUser() {
+        List<User> lesHommes = new ArrayList<User>();
+        Cursor cursor = database.query(FriendsDB.USER_TABLE_NAME,
+                allColumns, null, null, null, null, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            User unHomme = cursorToUser(cursor);
+            lesHommes.add(unHomme);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return lesHommes;
     }
 
 }

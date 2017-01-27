@@ -25,14 +25,22 @@
             android:layout_height="120dp">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="username"
+                android:textColor="@color/colorPrimary"
+                android:id="@+id/username"
+                android:layout_marginTop="15dp" />
+
+            <TextView
                 android:text="TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="56dp"
                 android:id="@+id/message"
                 android:textColor="@android:color/black"
                 android:minHeight="96dp"
-                android:gravity="center_vertical"
-                android:layout_marginTop="15dp" />
+                android:gravity="center_vertical" />
 
             <TextView
                 android:layout_width="wrap_content"

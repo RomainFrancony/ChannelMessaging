@@ -39,43 +39,54 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
     private ListView messagesListView;
     private EditText message;
     private ArrayList<Message> messagesBackup = new ArrayList<>();
+    private MessageAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
         toolbar.setTitle(getIntent().getStringExtra("channelName"));
 
-
-
-
         messagesListView = (ListView) findViewById(R.id.listMessages);
+        adapter = new MessageAdapter(getApplicationContext(), new ArrayList<Message>());
+        messagesListView.setAdapter(adapter);
         message = (EditText) findViewById(R.id.message);
+
         messagesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(Chat.this);
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                final Message user = (Message) messagesListView.getItemAtPosition(position);
+                SharedPreferences settings = getSharedPreferences(LoginActivity.STOCKAGE, 0);
+                String userIDConnected = settings.getString("login", "");
 
-                builder.setMessage("ajouter ami")
-                        .setTitle("Ajouter en ami");
+                if(!(user.getUsername().equals(userIDConnected)) ){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Chat.this);
 
-                builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        UserDataSource database = new UserDataSource(getApplicationContext());
+                    builder.setMessage("Ajouter "+user.getUsername()+" en amis .")
+                            .setTitle("Ajouter un ami");
 
-                    }
-                });
-                builder.setNegativeButton("Non", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
+                    builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            UserDataSource database = new UserDataSource(getApplicationContext());
+                            database.open();
 
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                            database.createUser(user.getUserID(),user.getUsername(),user.getImageUrl());
+                            database.close();
+                        }
+                    });
+                    builder.setNegativeButton("Non", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+
             }
         });
 
@@ -91,7 +102,6 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
                 connexion.setParmetres(params);
                 connexion.setOnNewsUpdateListener(Chat.this);
                 connexion.execute();
-
             }
         },500,1000);
 
@@ -116,19 +126,19 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
         });
     }
 
+
     @Override
     public void onDownloadComplete(String content) {
         Gson gson = new Gson();
         Messages messages = gson.fromJson(content,Messages.class);
         Collections.reverse(messages.getMessages());
-
-        messages.getMessages().removeAll(this.messagesBackup);
-
-
-        MessageAdapter adapter = new MessageAdapter(getApplicationContext(), messages.getMessages());
-
-        messagesListView.setAdapter(adapter);
-
+        if(this.messagesBackup.size() !=  messages.getMessages().size()){
+            for (Message m : messages.getMessages())
+            {
+                adapter.add(m);
+            }
+            adapter.notifyDataSetChanged();
+        }
         Messages messages2 = gson.fromJson(content,Messages.class);
         this.messagesBackup =  messages2.getMessages();
 

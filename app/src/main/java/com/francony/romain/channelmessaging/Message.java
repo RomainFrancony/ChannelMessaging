@@ -6,6 +6,16 @@ package com.francony.romain.channelmessaging;
 
 public class Message {
     private int userID;
+    private String username;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     private String message;
     private String date;
     private String imageUrl;

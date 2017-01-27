@@ -27,8 +27,12 @@
             android:name=".Chat"
             android:label="@string/title_activity_chat"
             android:theme="@style/romainFull"
-            android:windowSoftInputMode="adjustPan"></activity>
-        <activity android:name=".Friend"></activity>
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".Friend" />
+        <activity
+            android:name=".MessagePrivate"
+            android:label="@string/title_activity_message_private"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
