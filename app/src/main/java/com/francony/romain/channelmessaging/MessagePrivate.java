@@ -18,7 +18,6 @@ public class MessagePrivate extends AppCompatActivity {
 
         Connexion connexion = new Connexion("http://www.raphaelbischof.fr/messaging/?function=getmessages");
         HashMap<String,String> params = new HashMap<>();
-        params.put("")
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
