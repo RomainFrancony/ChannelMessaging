@@ -3,6 +3,7 @@ package com.francony.romain.channelmessaging;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -27,9 +28,13 @@ public class Friend extends AppCompatActivity {
         gridUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
                 User user = (User) gridUser.getItemAtPosition(position);
 
-                //Intent intent = new Intent()
+                Intent intent = new Intent(getApplicationContext(),MessagePrivate.class);
+                intent.putExtra("userid",user.getUserID());
+                startActivity(intent);
 
 
             }
