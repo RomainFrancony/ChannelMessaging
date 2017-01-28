@@ -37,14 +37,14 @@
         android:stackFromBottom="true"
         android:layout_height="453dp"
         android:layout_gravity="center_vertical"
-        android:id="@+id/listMessages" />
+        android:id="@+id/listMP" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textCapSentences|textAutoCorrect"
         android:ems="10"
-        android:id="@+id/message"
+        android:id="@+id/mpInput"
         android:gravity="bottom|center_vertical"
         android:layout_gravity="bottom|start"
         android:layout_marginBottom="25px"

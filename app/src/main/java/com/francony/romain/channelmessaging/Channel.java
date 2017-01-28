@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Channel extends AppCompatActivity implements OnDowloadCompleteListener, AdapterView.OnItemClickListener {
 
@@ -52,13 +54,21 @@ public class Channel extends AppCompatActivity implements OnDowloadCompleteListe
         setSupportActionBar(toolbar);
         listView = (ListView) findViewById(R.id.channels);
         listView.setOnItemClickListener(this);
-        connexion = new Connexion("http://www.raphaelbischof.fr/messaging/?function=getchannels");
-        HashMap<String,String> params = new HashMap<>();
-        SharedPreferences settings = getSharedPreferences(LoginActivity.STOCKAGE, 0);
-        params.put("accesstoken", settings.getString("token", "hello"));
-        connexion.setParmetres(params);
-        connexion.setOnNewsUpdateListener(Channel.this);
-        connexion.execute();
+
+
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                connexion = new Connexion("http://www.raphaelbischof.fr/messaging/?function=getchannels");
+                HashMap<String,String> params = new HashMap<>();
+                SharedPreferences settings = getSharedPreferences(LoginActivity.STOCKAGE, 0);
+                params.put("accesstoken", settings.getString("token", "hello"));
+                connexion.setParmetres(params);
+                connexion.setOnNewsUpdateListener(Channel.this);
+                connexion.execute();
+            }
+        },500,1000);
+
     }
 
     @Override

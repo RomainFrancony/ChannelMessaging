@@ -40,7 +40,8 @@
                 android:id="@+id/message"
                 android:textColor="@android:color/black"
                 android:minHeight="96dp"
-                android:gravity="center_vertical" />
+                android:gravity="center_vertical"
+                 />
 
             <TextView
                 android:layout_width="wrap_content"

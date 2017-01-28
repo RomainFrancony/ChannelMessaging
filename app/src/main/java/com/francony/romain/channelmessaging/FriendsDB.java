@@ -11,7 +11,7 @@ import android.os.Environment;
 public class FriendsDB extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 2;
-    private static final String DATABASE_NAME = "MyDB.db";
+    private static final String DATABASE_NAME = "User.db";
     public static final String USER_TABLE_NAME = "User";
     public static final String KEY_USERID = "userID";
     public static final String KEY_USERNAME = "username";
@@ -20,7 +20,7 @@ public class FriendsDB extends SQLiteOpenHelper {
             KEY_USERNAME + " TEXT, " + KEY_IMAGEURL + " TEXT);";
 
     public FriendsDB(Context context) {
-        super(context, Environment.getExternalStorageDirectory()+"/"+DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, Environment.getExternalStorageDirectory()+"/Chat/database/"+DATABASE_NAME, null, DATABASE_VERSION);
     }
     @Override
     public void onCreate(SQLiteDatabase db) {

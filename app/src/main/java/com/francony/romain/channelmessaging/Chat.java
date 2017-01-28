@@ -120,8 +120,6 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
                 message.setText("");
                 connexion.setParmetres(params);
                 connexion.execute();
-
-
             }
         });
     }

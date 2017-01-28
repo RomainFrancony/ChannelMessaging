@@ -39,7 +39,7 @@ public class FriendAdapter extends ArrayAdapter<User> {
         ImageView img = (ImageView) convertView.findViewById(R.id.imgFriend);
 
         username.setText(user.getUsername());
-        File imgFile = new File(Environment.getExternalStorageDirectory()+user.getImageUrl().substring(user.getImageUrl().lastIndexOf("/")));
+        File imgFile = new File(Environment.getExternalStorageDirectory()+"/Chat/img"+user.getImageUrl().substring(user.getImageUrl().lastIndexOf("/")));
 
         if(imgFile.exists()){
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
