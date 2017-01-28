@@ -33,7 +33,7 @@ public class Friend extends AppCompatActivity {
                 User user = (User) gridUser.getItemAtPosition(position);
 
                 Intent intent = new Intent(getApplicationContext(),MessagePrivate.class);
-                intent.putExtra("userid",user.getUserID());
+                intent.putExtra("userid",Integer.toString(user.getUserID()));
                 startActivity(intent);
 
 

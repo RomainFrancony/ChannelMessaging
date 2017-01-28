@@ -1,5 +1,6 @@
 package com.francony.romain.channelmessaging;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,6 +19,14 @@ public class MessagePrivate extends AppCompatActivity {
 
         Connexion connexion = new Connexion("http://www.raphaelbischof.fr/messaging/?function=getmessages");
         HashMap<String,String> params = new HashMap<>();
+        SharedPreferences settings = getSharedPreferences(LoginActivity.STOCKAGE, 0);
+        params.put("accesstoken", settings.getString("token", "hello"));
+        params.put("userid",getIntent().getStringExtra("userid"));
+
+        connexion.setParmetres(params);
+
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
