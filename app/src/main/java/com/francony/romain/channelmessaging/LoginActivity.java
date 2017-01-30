@@ -1,8 +1,12 @@
 package com.francony.romain.channelmessaging;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +24,9 @@ public class LoginActivity extends AppCompatActivity implements OnDowloadComplet
     private TextView password;
     private Button btnconnect;
     public static final String STOCKAGE = "MyPrefsFile";
+
+
+
 
 
     @Override
@@ -48,8 +55,32 @@ public class LoginActivity extends AppCompatActivity implements OnDowloadComplet
 
 
 
+        ActivityCompat.requestPermissions(LoginActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+
+
+
+
 
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                } else {
+
+                    finish();
+                }
+                return;
+            }
+        }
+    }
+
+
+
+
 
 
     @Override

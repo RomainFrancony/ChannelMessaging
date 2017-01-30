@@ -1,5 +1,6 @@
 package com.francony.romain.channelmessaging;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -40,6 +41,8 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
     private EditText message;
     private ArrayList<Message> messagesBackup = new ArrayList<>();
     private MessageAdapter adapter;
+
+
 
 
     @Override
