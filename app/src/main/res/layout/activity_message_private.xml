@@ -31,6 +31,8 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_menu_send" />
 
+
+
     <ListView
         android:layout_width="match_parent"
         android:transcriptMode="alwaysScroll"
