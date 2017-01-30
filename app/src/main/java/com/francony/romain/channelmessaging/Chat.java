@@ -130,7 +130,7 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
         Gson gson = new Gson();
         Messages messages = gson.fromJson(content,Messages.class);
         Collections.reverse(messages.getMessages());
-        if(this.messagesBackup.size() !=  messages.getMessages().size()){
+        if(!this.messagesBackup.equals(messages.getMessages())){
             for (Message m : messages.getMessages())
             {
                 adapter.add(m);

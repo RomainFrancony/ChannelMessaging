@@ -17,6 +17,8 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MessagePrivate extends AppCompatActivity implements OnDowloadCompleteListener {
     private ListView messageList;
@@ -34,14 +36,22 @@ public class MessagePrivate extends AppCompatActivity implements OnDowloadComple
         messageList = (ListView) findViewById(R.id.listMP);
         messageMp = (EditText) findViewById(R.id.mpInput);
         messageList.setAdapter(adapter);
-        Connexion connexion = new Connexion("http://www.raphaelbischof.fr/messaging/?function=getmessages");
-        HashMap<String,String> params = new HashMap<>();
-        SharedPreferences settings = getSharedPreferences(LoginActivity.STOCKAGE, 0);
-        params.put("accesstoken", settings.getString("token", "hello"));
-        params.put("userid",getIntent().getStringExtra("userid"));
-        connexion.setParmetres(params);
-        connexion.setOnNewsUpdateListener(MessagePrivate.this);
-        connexion.execute();
+
+
+
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Connexion connexion = new Connexion("http://www.raphaelbischof.fr/messaging/?function=getmessages");
+                HashMap<String,String> params = new HashMap<>();
+                SharedPreferences settings = getSharedPreferences(LoginActivity.STOCKAGE, 0);
+                params.put("accesstoken", settings.getString("token", "hello"));
+                params.put("userid",getIntent().getStringExtra("userid"));
+                connexion.setParmetres(params);
+                connexion.setOnNewsUpdateListener(MessagePrivate.this);
+                connexion.execute();
+            }
+        },500,1000);
 
 
 
@@ -71,7 +81,7 @@ public class MessagePrivate extends AppCompatActivity implements OnDowloadComple
 
         Collections.reverse(messages.getMessages());
 
-        if(this.messagesBackup.size() !=  messages.getMessages().size()){
+        if(this.messagesBackup.size() !=messages.getMessages().size()){
             for (PrivateMessageClass m : messages.getMessages())
             {
                 adapter.add(m);
@@ -80,7 +90,5 @@ public class MessagePrivate extends AppCompatActivity implements OnDowloadComple
         }
         PrivateMessages messages2 = gson.fromJson(content,PrivateMessages.class);
         this.messagesBackup =  messages2.getMessages();
-
-
     }
 }
