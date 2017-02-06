@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import org.w3c.dom.Text;
 
 import java.io.File;
@@ -51,15 +52,41 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Message message = getItem(position);
-        if (convertView == null) {
+        if (message.getMessageImageUrl().equals("")) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.message_item, parent, false);
+        }else{
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_massage_img, parent, false);
         }
-        TextView messageView = (TextView) convertView.findViewById(R.id.message);
+
+
+        if (message.getMessageImageUrl().equals("")) {
+            TextView messageView = (TextView) convertView.findViewById(R.id.message);
+            messageView.setText(message.getMessage());
+
+        }else{
+            ImageView imgMessage = (ImageView) convertView.findViewById(R.id.imgMessage);
+            File imgFile = new File(Environment.getExternalStorageDirectory()+"/Chat/img"+message.getMessageImageUrl().substring(message.getMessageImageUrl().lastIndexOf("/")));
+            if(imgFile.exists()){
+                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                imgMessage.setImageBitmap(myBitmap);
+            }else{
+                new GetImage(imgMessage).execute(message.getMessageImageUrl());
+            }
+            /*Glide
+                    .with(context)
+                    .load(message.getMessageImageUrl())
+                    .centerCrop()
+                    .crossFade()
+                    .into(imgMessage);*/
+        }
+
+
         TextView name = (TextView) convertView.findViewById(R.id.username);
         ImageView img = (ImageView) convertView.findViewById(R.id.img);
         TextView date = (TextView) convertView.findViewById(R.id.dateText);
+
         date.setText(message.getDate());
-        messageView.setText(message.getMessage());
+
         name.setText(message.getUsername());
         File imgFile = new File(Environment.getExternalStorageDirectory()+"/Chat/img"+message.getImageUrl().substring(message.getImageUrl().lastIndexOf("/")));
 

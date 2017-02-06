@@ -20,6 +20,16 @@ public class Message {
     private String date;
     private String imageUrl;
 
+    public String getMessageImageUrl() {
+        return messageImageUrl;
+    }
+
+    public void setMessageImageUrl(String messageImageUrl) {
+        this.messageImageUrl = messageImageUrl;
+    }
+
+    private String messageImageUrl;
+
     public int getUserID() {
         return userID;
     }

@@ -1,5 +1,6 @@
 package com.francony.romain.channelmessaging;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -51,7 +52,7 @@ public class UploadFileToServer extends AsyncTask<String, Integer, String> {
         mDialog.setCancelable(false);
         mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 
-        //mDialog.show();
+        mDialog.show();
     }
 
     @Override

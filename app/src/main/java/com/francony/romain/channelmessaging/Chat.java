@@ -155,6 +155,12 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+                try{
+                    resizeFile(test,getApplicationContext());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 // Android a depuis Android Nougat besoin d'un provider pour donner l'accès à un répertoire pour une autre app, cf : http://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed
                 Uri uri = FileProvider.getUriForFile(Chat.this, Chat.this.getApplicationContext().getPackageName() + ".provider", test);
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //Création de l’appelà l’application appareil photo pour récupérer une image
@@ -186,8 +192,12 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
                 values.add(new BasicNameValuePair("accesstoken",settings.getString("token","")));
                 values.add(new BasicNameValuePair("channelid",getIntent().getStringExtra("channelID")));
                 File test = new File(Environment.getExternalStorageDirectory()+"/Chat/img/img.jpg");
-
-                new UploadFileToServer(getApplicationContext(),test.getPath() , values, new UploadFileToServer.OnUploadFileListener() {
+                try{
+                    resizeFile(test,getApplicationContext());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                new UploadFileToServer(Chat.this,test.getPath() , values, new UploadFileToServer.OnUploadFileListener() {
                     @Override
                     public void onResponse(String result) {
                         Toast.makeText(getApplicationContext(),"Upload réussie",Toast.LENGTH_LONG);
@@ -225,7 +235,7 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
 
 
     //decodes image and scales it to reduce memory consumption
-    private void resizeFile(File f, Context context) throws IOException {
+    public static void resizeFile(File f, Context context) throws IOException {
         //Decode image size
         BitmapFactory.Options o = new BitmapFactory.Options();
         o.inJustDecodeBounds = true;
