@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -54,6 +55,18 @@ public class LoginActivity extends AppCompatActivity implements OnDowloadComplet
 
 
 
+        FloatingActionButton mapBtn = (FloatingActionButton) findViewById(R.id.fabmap);
+
+        mapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),GPSActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
 
         ActivityCompat.requestPermissions(LoginActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
 
@@ -87,6 +100,8 @@ public class LoginActivity extends AppCompatActivity implements OnDowloadComplet
     public void onDownloadComplete(String content) {
         Gson gson = new Gson();
         Response retour = gson.fromJson(content,Response.class);
+
+
 
         if(retour.getResponse().equals("Ok")){
             Toast.makeText(getApplicationContext(), "Connexion réussie", Toast.LENGTH_SHORT).show();

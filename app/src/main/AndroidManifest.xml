@@ -5,8 +5,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-    <uses-feature android:name="android.hardware.camera" android:required="true"/>
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -26,7 +30,6 @@
             android:label="@string/title_activity_channel"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-
             android:name=".Chat"
             android:label="@string/title_activity_chat"
             android:theme="@style/romainFull"
@@ -35,7 +38,8 @@
         <activity
             android:name=".MessagePrivate"
             android:label="@string/title_activity_message_private"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -43,8 +47,13 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
+
+        <activity
+            android:name=".GPSActivity"
+            android:label="@string/title_activity_gps"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

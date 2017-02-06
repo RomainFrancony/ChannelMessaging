@@ -3,4 +3,5 @@
     <string name="title_activity_channel">Choisir un channel</string>
     <string name="title_activity_chat">Chat</string>
     <string name="title_activity_message_private">MessagePrivate</string>
+    <string name="title_activity_gps">GPSActivity</string>
 </resources>
