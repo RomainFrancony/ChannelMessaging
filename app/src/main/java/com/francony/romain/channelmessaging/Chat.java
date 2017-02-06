@@ -1,6 +1,7 @@
 package com.francony.romain.channelmessaging;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -143,18 +144,19 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
             }
         });
 
-        FloatingActionButton photo = (FloatingActionButton) findViewById(R.id.imageSend);
+        final FloatingActionButton photo = (FloatingActionButton) findViewById(R.id.imageSend);
         photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                File test = new File(Environment.getExternalStorageDirectory()+"/img.jpg");
+                photo.setEnabled(false);
+                File test = new File(Environment.getExternalStorageDirectory()+"/Chat/img/img.jpg");
                 try {
                     test.createNewFile();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-// Android a depuis Android Nougat besoin d'un provider pour donner l'accès à un répertoire pour une autre app, cf : http://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed
-                Uri uri = FileProvider.getUriForFile(Chat.this, Chat.this.getApplicationContext().getPackageName() + ".provider", test);;
+                // Android a depuis Android Nougat besoin d'un provider pour donner l'accès à un répertoire pour une autre app, cf : http://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed
+                Uri uri = FileProvider.getUriForFile(Chat.this, Chat.this.getApplicationContext().getPackageName() + ".provider", test);
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //Création de l’appelà l’application appareil photo pour récupérer une image
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, uri); //Emplacement de l’image stockée
                 startActivityForResult(intent, PICTURE_REQUEST_CODE);
@@ -175,7 +177,6 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
 
 
 
-
             case PICTURE_REQUEST_CODE :
 
                 SharedPreferences settings = getSharedPreferences(LoginActivity.STOCKAGE, 0);
@@ -183,20 +184,21 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
 
                 List<NameValuePair> values = new ArrayList<NameValuePair>();
                 values.add(new BasicNameValuePair("accesstoken",settings.getString("token","")));
-
                 values.add(new BasicNameValuePair("channelid",getIntent().getStringExtra("channelID")));
+                File test = new File(Environment.getExternalStorageDirectory()+"/Chat/img/img.jpg");
 
-                new UploadFileToServer(getApplicationContext(), data.getData().getPath(), values, new UploadFileToServer.OnUploadFileListener() {
+                new UploadFileToServer(getApplicationContext(),test.getPath() , values, new UploadFileToServer.OnUploadFileListener() {
                     @Override
                     public void onResponse(String result) {
-                        Toast.makeText(getApplicationContext(),"reponse",Toast.LENGTH_LONG);
+                        Toast.makeText(getApplicationContext(),"Upload réussie",Toast.LENGTH_LONG);
                     }
-
                     @Override
                     public void onFailed(IOException error) {
-                        Toast.makeText(getApplicationContext(),"failde",Toast.LENGTH_LONG);
+                        Toast.makeText(getApplicationContext(),"upload failed",Toast.LENGTH_LONG);
                     }
-                });
+                }).execute();
+                final FloatingActionButton photo = (FloatingActionButton) findViewById(R.id.imageSend);
+                photo.setEnabled(true);
 
         }
     }

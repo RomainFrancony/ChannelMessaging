@@ -46,10 +46,12 @@ public class UploadFileToServer extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPreExecute() {
         mFile = new File(mFilePath);
+
         mDialog.setMessage("Please Wait..");
         mDialog.setCancelable(false);
         mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        mDialog.show();
+
+        //mDialog.show();
     }
 
     @Override
