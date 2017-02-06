@@ -23,6 +23,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -146,13 +147,14 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
         photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-File test = new File(Environment.getExternalStorageDirectory()+"/Chat/img/img.jpg");
+                File test = new File(Environment.getExternalStorageDirectory()+"/img.jpg");
                 try {
                     test.createNewFile();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Uri uri = Uri.parse(test.toString());
+// Android a depuis Android Nougat besoin d'un provider pour donner l'accès à un répertoire pour une autre app, cf : http://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed
+                Uri uri = FileProvider.getUriForFile(Chat.this, Chat.this.getApplicationContext().getPackageName() + ".provider", test);;
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //Création de l’appelà l’application appareil photo pour récupérer une image
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, uri); //Emplacement de l’image stockée
                 startActivityForResult(intent, PICTURE_REQUEST_CODE);
