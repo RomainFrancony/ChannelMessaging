@@ -1,9 +1,11 @@
 package com.francony.romain.channelmessaging;
 
 import android.Manifest;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -11,10 +13,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -42,6 +49,10 @@ public class LoginActivity extends AppCompatActivity implements OnDowloadComplet
         btnconnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Animation animSlideLeft = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.slide_left);
+                TextView txt = (TextView) findViewById(R.id.textAccueil);
+                txt.clearAnimation();
+                txt.startAnimation(animSlideLeft);
                 Toast.makeText(getApplicationContext(), "Connexion en cours", Toast.LENGTH_SHORT).show();
                 HashMap<String,String> params = new HashMap<String, String>();
                 params.put("username",login.getText().toString());
@@ -50,27 +61,42 @@ public class LoginActivity extends AppCompatActivity implements OnDowloadComplet
                 connexion.setParmetres(params);
                 connexion.setOnNewsUpdateListener(LoginActivity.this);
                 connexion.execute();
+
+
             }
         });
 
 
 
-        FloatingActionButton mapBtn = (FloatingActionButton) findViewById(R.id.fabmap);
 
-        mapBtn.setOnClickListener(new View.OnClickListener() {
+
+
+        //FloatingActionButton mapBtn = (FloatingActionButton) findViewById(R.id.fabmap);
+
+        /*mapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),GPSActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
 
 
 
         ActivityCompat.requestPermissions(LoginActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
 
+        final Handler mHandlerTada = new Handler(); // android.os.handler
+        final int mShortDelay = 4000; //milliseconds
 
+        mHandlerTada.postDelayed(new Runnable(){
+            public void run(){
+                YoYo.with(Techniques.Tada)
+                        .duration(700)
+                        .playOn(findViewById(R.id.imageAccueil));
+                mHandlerTada.postDelayed(this, mShortDelay);
+            }
+        }, mShortDelay);
 
 
 
@@ -105,13 +131,16 @@ public class LoginActivity extends AppCompatActivity implements OnDowloadComplet
 
         if(retour.getResponse().equals("Ok")){
             Toast.makeText(getApplicationContext(), "Connexion réussie", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getApplicationContext(),Channel.class);
+
             SharedPreferences settings = getSharedPreferences(STOCKAGE, 0);
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("token",retour.getAccesstoken());
             editor.putString("login",login.getText().toString());
             editor.commit();
-            startActivity(intent);
+            ImageView mIvLogo = (ImageView) findViewById(R.id.imageAccueil);
+            Intent loginIntent = new Intent(LoginActivity.this, Channel.class);
+            startActivity(loginIntent, ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this, mIvLogo, "logo").toBundle());
+
         }else{
             Toast.makeText(getApplicationContext(), "Connexion échouée", Toast.LENGTH_SHORT).show();
         }

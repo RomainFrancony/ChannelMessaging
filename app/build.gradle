@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.francony.romain.channelmessaging"
-        minSdkVersion 13
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -32,4 +32,8 @@ dependencies {
     compile 'com.android.support:design:25.1.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.google.android.gms:play-services:10.0.1'
+    compile 'com.android.support:support-compat:25.1.1'
+    compile 'com.daimajia.easing:library:2.0@aar'
+    compile 'com.daimajia.androidanimations:library:2.2@aar'
+
 }
