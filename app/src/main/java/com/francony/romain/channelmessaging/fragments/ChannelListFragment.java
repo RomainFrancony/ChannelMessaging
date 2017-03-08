@@ -81,6 +81,7 @@ public class ChannelListFragment extends Fragment {
         fab =(FloatingActionButton) v.findViewById(R.id.fab);
 
         listView = (ListView) v.findViewById(R.id.channels);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -7,9 +7,10 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="513dp"
+        android:layout_height="fill_parent"
         android:id="@+id/channels"
         android:foregroundGravity="bottom"
+        android:listSelector="@android:color/holo_orange_light"
         android:layout_gravity="bottom" />
 
     <android.support.design.widget.FloatingActionButton

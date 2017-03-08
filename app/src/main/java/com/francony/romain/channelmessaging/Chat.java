@@ -69,7 +69,7 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
         setContentView(R.layout.activity_chat);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle(getIntent().getStringExtra("channelName"));
+        //toolbar.setTitle(getIntent().getStringExtra("channelName"));
 
         messagesListView = (ListView) findViewById(R.id.listMessages);
         adapter = new MessageAdapter(getApplicationContext(), new ArrayList<Message>());

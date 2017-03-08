@@ -3,6 +3,7 @@ package com.francony.romain.channelmessaging;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -51,6 +52,7 @@ public class Channel extends AppCompatActivity implements OnDowloadCompleteListe
         Channels listeChannels = gson.fromJson(content,Channels.class);
         ChannelListFragment fragA = (ChannelListFragment)getSupportFragmentManager().findFragmentById(R.id.fragmentChannel);
         fragA.listView.setAdapter(new ListeArrayAdapter(getApplicationContext(),listeChannels.getChannels()));
+
     }
 
 
@@ -60,15 +62,15 @@ public class Channel extends AppCompatActivity implements OnDowloadCompleteListe
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         ChannelListFragment fragA = (ChannelListFragment)getSupportFragmentManager().findFragmentById(R.id.fragmentChannel);
         MessageFragment fragB = (MessageFragment)getSupportFragmentManager().findFragmentById(R.id.fragmentMessage);
+        TextView idText = (TextView) view.findViewById(R.id.idChannel) ;
+        ChannelClass channel = (ChannelClass) idText.getTag();
         if(fragB == null|| !fragB.isInLayout()){
-            TextView idText = (TextView) view.findViewById(R.id.idChannel) ;
-            ChannelClass channel = (ChannelClass) idText.getTag();
             Intent i = new Intent(getApplicationContext(),Chat.class);
             i.putExtra("channelID",channel.getChannelID());
             i.putExtra("channelName",channel.getName());
             startActivity(i);
         } else {
-            //fragB.fillTextView(fragA.listItems[position]);
+            fragB.getChannelID(channel.getChannelID());
         }
     }
 

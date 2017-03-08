@@ -14,6 +14,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
@@ -56,7 +58,7 @@ import java.util.TimerTask;
  * A simple {@link Fragment} subclass.
  */
 public class MessageFragment extends Fragment implements OnDowloadCompleteListener{
-
+    private String channelID = "1";
 
     public MessageFragment() {
         // Required empty public constructor
@@ -67,28 +69,18 @@ public class MessageFragment extends Fragment implements OnDowloadCompleteListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_message, container, false);
-    }
-    private Connexion connexion;
-    private ListView messagesListView;
-    private EditText message;
-    private ArrayList<Message> messagesBackup = new ArrayList<>();
-    private MessageAdapter adapter;
-    private final int PICTURE_REQUEST_CODE = 0;
+        View rootView = inflater.inflate(R.layout.fragment_message, container, false);
 
 
 
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle(getActivity().getIntent().getStringExtra("channelName"));
+        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        // toolbar.setTitle(getActivity().getIntent().getStringExtra("channelName"));
 
-        messagesListView = (ListView) getActivity().findViewById(R.id.listMessages);
+        messagesListView = (ListView) rootView.findViewById(R.id.listMessages);
         adapter = new MessageAdapter(getActivity().getApplicationContext(), new ArrayList<Message>());
         messagesListView.setAdapter(adapter);
-        message = (EditText) getActivity().findViewById(R.id.message);
+        message = (EditText) rootView.findViewById(R.id.message);
 
         messagesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -126,39 +118,31 @@ public class MessageFragment extends Fragment implements OnDowloadCompleteListen
         });
 
 
-        new Timer().scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                connexion = new Connexion("http://www.raphaelbischof.fr/messaging/?function=getmessages");
-                HashMap<String,String> params = new HashMap<String, String>();
-                SharedPreferences settings = getActivity().getSharedPreferences(LoginActivity.STOCKAGE, 0);
-                params.put("accesstoken", settings.getString("token", "hello"));
-                params.put("channelid",getActivity().getIntent().getStringExtra("channelID"));
-                connexion.setParmetres(params);
-                connexion.setOnNewsUpdateListener(MessageFragment.this);
-                connexion.execute();
-            }
-        },500,1000);
 
-        FloatingActionButton fab = (FloatingActionButton)getActivity().findViewById(R.id.fab);
+
+        FloatingActionButton fab = (FloatingActionButton)rootView.findViewById(R.id.fab);
         //envoie message
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View rootView) {
                 connexion = new Connexion("http://www.raphaelbischof.fr/messaging/?function=sendmessage");
                 HashMap<String,String> params = new HashMap<String, String>();
                 SharedPreferences settings = getActivity().getSharedPreferences(LoginActivity.STOCKAGE, 0);
                 params.put("accesstoken", settings.getString("token", "hello"));
-                params.put("channelid",getActivity().getIntent().getStringExtra("channelID"));
+
+                params.put("channelid",channelID);
+
                 params.put("message",message.getText().toString());
 
+                System.out.println("---------------------------------------------------------------------");
+                System.out.println(params);
                 message.setText("");
                 connexion.setParmetres(params);
                 connexion.execute();
             }
         });
 
-        final FloatingActionButton photo = (FloatingActionButton) getActivity().findViewById(R.id.imageSend);
+        final FloatingActionButton photo = (FloatingActionButton) rootView.findViewById(R.id.imageSend);
         photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,8 +169,49 @@ public class MessageFragment extends Fragment implements OnDowloadCompleteListen
             }
         });
 
+
+
+        return rootView;
+    }
+    private Connexion connexion;
+    private ListView messagesListView;
+    private EditText message;
+    private ArrayList<Message> messagesBackup = new ArrayList<>();
+    private MessageAdapter adapter;
+    private final int PICTURE_REQUEST_CODE = 0;
+
+
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if(getActivity() !=null){
+                    connexion = new Connexion("http://www.raphaelbischof.fr/messaging/?function=getmessages");
+
+                    HashMap<String,String> params = new HashMap<String, String>();
+                    SharedPreferences settings = getActivity().getSharedPreferences(LoginActivity.STOCKAGE, 0);
+                    params.put("accesstoken", settings.getString("token", "hello"));
+
+                    params.put("channelid",channelID);
+
+
+                    connexion.setParmetres(params);
+                    connexion.setOnNewsUpdateListener(MessageFragment.this);
+                    connexion.execute();
+                }
+            }
+        },500,1000);
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -304,6 +329,10 @@ public class MessageFragment extends Fragment implements OnDowloadCompleteListen
                 break;
         }
         return rotate;
+    }
+
+    public void getChannelID(String id){
+        this.channelID = id;
     }
 
 

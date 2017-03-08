@@ -34,12 +34,17 @@ public class ListeArrayAdapter extends ArrayAdapter<ChannelClass> {
         }
         TextView nb = (TextView) convertView.findViewById(R.id.nbConnect);
         TextView name = (TextView) convertView.findViewById(R.id.channelName);
-        name.setText(channel.getName());
+        name.setText();
         nb.setText("Nombre de personnes connectés : "+channel.getConnectedusers().toString());
 
         TextView id = (TextView) convertView.findViewById(R.id.idChannel);
         id.setTag(channel);
 
+        if(position==0){
+            System.out.println("-----------------------------------------------");
+            System.out.println(channel.getName().toString());
+            convertView.setSelected(true);
+        }
 
 
         return convertView;
