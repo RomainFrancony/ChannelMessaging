@@ -12,17 +12,19 @@
     tools:context="com.francony.romain.channelmessaging.LoginActivity"
     android:id="@+id/llBackground"
     android:padding="20dp"
+    app:theme="@style/navbarDark"
     android:background="@color/background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:id="@+id/container"
         android:layout_gravity="center_vertical">
         <ImageView
-            android:layout_width="250dp"
+            android:layout_width="220dp"
             android:layout_gravity="center"
-            android:layout_height="250dp"
+            android:layout_height="220dp"
             android:id="@+id/imageAccueil"
             android:src="@drawable/channel_messaging_logo"/>
         <android.support.design.widget.TextInputLayout
@@ -63,6 +65,19 @@
 
 
 
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:indicatorName="BallPulseIndicator" />
+
+
         <Button
             android:text="Connexion"
             android:id="@+id/btnConnect"
@@ -71,8 +86,10 @@
             android:textColor="@color/white"
             android:background="@color/greenMaterial"
             />
+        </RelativeLayout>
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
             android:textAlignment="center"
             android:id="@+id/textAccueil"
             android:textColor="@color/white"

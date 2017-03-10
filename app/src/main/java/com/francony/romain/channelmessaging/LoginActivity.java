@@ -1,6 +1,7 @@
 package com.francony.romain.channelmessaging;
 
 import android.Manifest;
+import android.animation.Animator;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -25,13 +27,26 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
+import java.util.Random;
 
 public class LoginActivity extends AppCompatActivity implements OnDowloadCompleteListener {
 
     private TextView login;
     private TextView password;
     private Button btnconnect;
+    private TextView textAccueil;
     public static final String STOCKAGE = "MyPrefsFile";
+
+    private static final String[] explainStringArray = {
+            "Connecte toi pour chatter avec tes amis",
+            "Salut à tous les gamers !",
+            "Oh la triple headshot",
+            "Yo tous le monde c'est Squezie",
+            "AH !",
+            "YEAH BITCH !! MAGNETS"
+    };
+
+    private View.OnClickListener mListener;
 
 
 
@@ -45,8 +60,9 @@ public class LoginActivity extends AppCompatActivity implements OnDowloadComplet
         login = (TextView) findViewById(R.id.txtLogin);
         password = (TextView) findViewById(R.id.txtPassword);
         btnconnect = (Button) findViewById(R.id.btnConnect);
+        textAccueil = (TextView) findViewById(R.id.textAccueil);
 
-        btnconnect.setOnClickListener(new View.OnClickListener() {
+        mListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Animation animSlideLeft = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.slide_left);
@@ -61,10 +77,13 @@ public class LoginActivity extends AppCompatActivity implements OnDowloadComplet
                 connexion.setParmetres(params);
                 connexion.setOnNewsUpdateListener(LoginActivity.this);
                 connexion.execute();
+                Animation animFadout = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.fade_out);
+                btnconnect.startAnimation(animFadout);
 
 
             }
-        });
+        };
+        btnconnect.setOnClickListener(mListener);
 
 
 
@@ -97,6 +116,34 @@ public class LoginActivity extends AppCompatActivity implements OnDowloadComplet
                 mHandlerTada.postDelayed(this, mShortDelay);
             }
         }, mShortDelay);
+
+        final Handler mHandlerMessage = new Handler();
+        mHandlerMessage.postDelayed(new Runnable(){
+            public void run(){
+                YoYo.with(Techniques.SlideOutRight).duration(750).withListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                    }
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        textAccueil.setText(explainStringArray[new Random().nextInt(explainStringArray.length)]);
+                        YoYo.with(Techniques.SlideInLeft).duration(750).playOn(textAccueil);
+                    }
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                    }
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+                    }
+                }).playOn(textAccueil);
+                mHandlerMessage.postDelayed(this, 5000);
+            }
+        }, 5000);
+
+
+
+
+
 
 
 
@@ -142,7 +189,11 @@ public class LoginActivity extends AppCompatActivity implements OnDowloadComplet
             startActivity(loginIntent, ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this, mIvLogo, "logo").toBundle());
 
         }else{
-            Toast.makeText(getApplicationContext(), "Connexion échouée", Toast.LENGTH_SHORT).show();
+            Snackbar mySnackbar = Snackbar.make(findViewById(R.id.container),"Connexion échoué", Snackbar.LENGTH_SHORT);
+            mySnackbar.setAction("Réessayer!", mListener);
+            mySnackbar.show();
         }
+
+        btnconnect.clearAnimation();
     }
 }
