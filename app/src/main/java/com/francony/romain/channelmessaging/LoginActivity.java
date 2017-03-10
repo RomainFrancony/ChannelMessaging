@@ -142,7 +142,7 @@ public class LoginActivity extends AppCompatActivity implements OnDowloadComplet
                 mHandlerMessage.postDelayed(this, 5000);
             }
         }, 5000);
-
+        //u mad ?
 
         LinearLayout rl = (LinearLayout) findViewById(R.id.llBackground);
         FlowingGradientClass grad = new FlowingGradientClass();
