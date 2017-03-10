@@ -30,6 +30,7 @@
             android:id="@+id/input_layout_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColorHint="@color/white"
             android:layout_margin="16dp">
         <EditText
             app:theme="@style/TextLabel"
@@ -47,6 +48,7 @@
             android:id="@+id/input_layout_mdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColorHint="@color/white"
             android:layout_margin="16dp">
         <EditText
             app:theme="@style/TextLabel"
@@ -57,6 +59,7 @@
             android:inputType="textPassword"
             android:id="@+id/txtPassword"
             android:textColor="@color/white"
+            android:textColorHighlight="@color/white"
             android:paddingBottom="20dp"
             android:text="romainfrancony" />
         </android.support.design.widget.TextInputLayout>

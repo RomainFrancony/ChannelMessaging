@@ -19,11 +19,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.dynamitechetan.flowinggradient.FlowingGradientClass;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -141,6 +144,12 @@ public class LoginActivity extends AppCompatActivity implements OnDowloadComplet
         }, 5000);
 
 
+        LinearLayout rl = (LinearLayout) findViewById(R.id.llBackground);
+        FlowingGradientClass grad = new FlowingGradientClass();
+        grad.setBackgroundResource(R.drawable.translate)
+                .onLinearLayout(rl)
+                .setTransitionDuration(4000)
+                .start();
 
 
 

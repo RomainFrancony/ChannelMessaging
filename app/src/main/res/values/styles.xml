@@ -32,6 +32,8 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="romainFull" parent="Theme.AppCompat.Light.NoActionBar">
+
+
         <!-- specify enter and exit transitions -->
         <item name="android:windowEnterTransition">@android:transition/slide_top</item>
         <item name="android:windowExitTransition">@android:transition/explode</item>
@@ -43,7 +45,8 @@
         <item name="android:windowSharedElementExitTransition">@transition/change_image_transform</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/white</item>
+        <item name="android:textColorHint">@color/white</item>
     </style>
 
     <style name="noReadMessage">
@@ -53,6 +56,7 @@
     <style name="TextLabel" parent="TextAppearance.AppCompat">
         <!-- Hint color and label color in FALSE state -->
         <item name="android:textColorHint">@color/white</item>
+        <item name="android:color">@color/white</item>
         <item name="android:textSize">20sp</item>
         <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
         <item name="colorControlNormal">@color/white</item>
