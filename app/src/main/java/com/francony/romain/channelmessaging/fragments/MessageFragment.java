@@ -192,7 +192,8 @@ public class MessageFragment extends Fragment implements OnDowloadCompleteListen
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new Timer().scheduleAtFixedRate(new TimerTask() {
+        final Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 if(getActivity() !=null){
@@ -208,6 +209,8 @@ public class MessageFragment extends Fragment implements OnDowloadCompleteListen
                     connexion.setParmetres(params);
                     connexion.setOnNewsUpdateListener(MessageFragment.this);
                     connexion.execute();
+                } else {
+                    timer.cancel();
                 }
             }
         },500,1000);
@@ -236,7 +239,7 @@ public class MessageFragment extends Fragment implements OnDowloadCompleteListen
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                new UploadFileToServer((Chat)getActivity(),test.getPath() , values, new UploadFileToServer.OnUploadFileListener() {
+                new UploadFileToServer(getActivity(),test.getPath() , values, new UploadFileToServer.OnUploadFileListener() {
                     @Override
                     public void onResponse(String result) {
                         Toast.makeText(getActivity(),"Upload réussie",Toast.LENGTH_LONG);

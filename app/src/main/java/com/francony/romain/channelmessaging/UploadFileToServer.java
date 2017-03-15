@@ -22,7 +22,6 @@ import java.util.List;
  * Created by franconr on 30/01/2017.
  */
 public class UploadFileToServer extends AsyncTask<String, Integer, String> {
-    private ProgressDialog mDialog;
     private static final String URL = "http://www.raphaelbischof.fr/messaging/upload.php";
     private String mFilePath = "";
     private List<NameValuePair> mParameters;
@@ -38,7 +37,6 @@ public class UploadFileToServer extends AsyncTask<String, Integer, String> {
      * @param onUploadFileListener Listener that provides you the differents states of the request
      */
     public UploadFileToServer(Context context, String filePath, List<NameValuePair> values, OnUploadFileListener onUploadFileListener) {
-        mDialog = new ProgressDialog(context);
         mFilePath = filePath;
         mParameters = values;
         this.mOnUploadFileListener = onUploadFileListener;
@@ -47,12 +45,6 @@ public class UploadFileToServer extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPreExecute() {
         mFile = new File(mFilePath);
-
-        mDialog.setMessage("Please Wait..");
-        mDialog.setCancelable(false);
-        mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-
-        mDialog.show();
     }
 
     @Override
@@ -83,20 +75,14 @@ public class UploadFileToServer extends AsyncTask<String, Integer, String> {
 
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Connection", "Keep-Alive");
-            connection.setRequestProperty("User-Agent",
-                    "Android Multipart HTTP Client 1.0");
-            connection.setRequestProperty("Content-Type",
-                    "multipart/form-data; boundary=" + boundary);
+            connection.setRequestProperty("User-Agent", "Android Multipart HTTP Client 1.0");
+            connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 
-            outputStream = new DataOutputStream(
-                    connection.getOutputStream());
+            outputStream = new DataOutputStream(connection.getOutputStream());
             outputStream.writeBytes(twoHyphens + boundary + lineEnd);
-            outputStream
-                    .writeBytes("Content-Disposition: form-data; name=dosya; filename=\""
-                            + q[idx] + "\"" + lineEnd);
+            outputStream.writeBytes("Content-Disposition: form-data; name=dosya; filename=\"" + q[idx] + "\"" + lineEnd);
             outputStream.writeBytes("Content-Type: image/jpg" + lineEnd);
-            outputStream.writeBytes("Content-Transfer-Encoding: binary"
-                    + lineEnd);
+            outputStream.writeBytes("Content-Transfer-Encoding: binary" + lineEnd);
             outputStream.writeBytes(lineEnd);
 
             bytesAvailable = fileInputStream.available();
@@ -117,17 +103,14 @@ public class UploadFileToServer extends AsyncTask<String, Integer, String> {
             outputStream.writeBytes(lineEnd);
             for (NameValuePair post : mParameters) {
                 outputStream.writeBytes(twoHyphens + boundary + lineEnd);
-                outputStream
-                        .writeBytes("Content-Disposition: form-data; name=\"" + post.getName() + "\"" + lineEnd);
-                outputStream.writeBytes("Content-Type: text/plain"
-                        + lineEnd);
+                outputStream.writeBytes("Content-Disposition: form-data; name=\"" + post.getName() + "\"" + lineEnd);
+                outputStream.writeBytes("Content-Type: text/plain" + lineEnd);
                 outputStream.writeBytes(lineEnd);
                 outputStream.writeBytes(post.getValue());
                 outputStream.writeBytes(lineEnd);
             }
 
-            outputStream.writeBytes(twoHyphens + boundary + twoHyphens
-                    + lineEnd);
+            outputStream.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
             inputStream = connection.getInputStream();
             String result = convertStreamToString(inputStream);
             fileInputStream.close();
@@ -144,12 +127,10 @@ public class UploadFileToServer extends AsyncTask<String, Integer, String> {
 
     @Override
     protected void onProgressUpdate(Integer... progress) {
-        mDialog.setProgress((progress[0]*100)/(int)mFile.length());
     }
 
     @Override
     protected void onPostExecute(String result) {
-        mDialog.dismiss();
         if (result == null){
             if (currentException!= null){
                 mOnUploadFileListener.onFailed(currentException);
@@ -160,8 +141,7 @@ public class UploadFileToServer extends AsyncTask<String, Integer, String> {
     }
 
     private String convertStreamToString(InputStream is) {
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(is));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
 
         String line;
