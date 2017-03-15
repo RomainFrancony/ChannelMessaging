@@ -1,7 +1,6 @@
-package com.francony.romain.channelmessaging;
+package com.francony.romain.channelmessaging.fragments;
 
-import android.Manifest;
-import android.app.Activity;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,31 +8,36 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.francony.romain.channelmessaging.Chat;
+import com.francony.romain.channelmessaging.Connexion;
+import com.francony.romain.channelmessaging.LoginActivity;
+import com.francony.romain.channelmessaging.Message;
+import com.francony.romain.channelmessaging.MessageAdapter;
+import com.francony.romain.channelmessaging.Messages;
+import com.francony.romain.channelmessaging.OnDowloadCompleteListener;
+import com.francony.romain.channelmessaging.R;
+import com.francony.romain.channelmessaging.UploadFileToServer;
+import com.francony.romain.channelmessaging.UserDataSource;
 import com.google.gson.Gson;
 
 import org.apache.http.NameValuePair;
@@ -44,54 +48,56 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Chat extends AppCompatActivity implements OnDowloadCompleteListener {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class MessageFragment extends Fragment implements OnDowloadCompleteListener{
+    private String channelID = "1";
 
-    private Connexion connexion;
-    private ListView messagesListView;
-    private EditText message;
-    private ArrayList<Message> messagesBackup = new ArrayList<>();
-    private MessageAdapter adapter;
-    private final int PICTURE_REQUEST_CODE = 0;
-
-
+    public MessageFragment() {
+        // Required empty public constructor
+    }
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        //toolbar.setTitle(getIntent().getStringExtra("channelName"));
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.fragment_message, container, false);
 
-        messagesListView = (ListView) findViewById(R.id.listMessages);
-        adapter = new MessageAdapter(getApplicationContext(), new ArrayList<Message>());
+
+
+
+        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        // toolbar.setTitle(getActivity().getIntent().getStringExtra("channelName"));
+
+        messagesListView = (ListView) rootView.findViewById(R.id.listMessages);
+        adapter = new MessageAdapter(getActivity().getApplicationContext(), new ArrayList<Message>());
         messagesListView.setAdapter(adapter);
-        message = (EditText) findViewById(R.id.message);
+        message = (EditText) rootView.findViewById(R.id.message);
 
         messagesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 final Message user = (Message) messagesListView.getItemAtPosition(position);
-                SharedPreferences settings = getSharedPreferences(LoginActivity.STOCKAGE, 0);
+                SharedPreferences settings = getActivity().getSharedPreferences(LoginActivity.STOCKAGE, 0);
                 String userIDConnected = settings.getString("login", "");
 
                 if(!(user.getUsername().equals(userIDConnected)) ){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Chat.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
                     builder.setMessage("Ajouter "+user.getUsername()+" en amis .")
                             .setTitle("Ajouter un ami");
 
                     builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            UserDataSource database = new UserDataSource(getApplicationContext());
+                            UserDataSource database = new UserDataSource(getActivity().getApplicationContext());
                             database.open();
 
                             database.createUser(user.getUserID(),user.getUsername(),user.getImageUrl());
@@ -112,39 +118,31 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
         });
 
 
-        new Timer().scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                connexion = new Connexion("http://www.raphaelbischof.fr/messaging/?function=getmessages");
-                HashMap<String,String> params = new HashMap<String, String>();
-                SharedPreferences settings = getSharedPreferences(LoginActivity.STOCKAGE, 0);
-                params.put("accesstoken", settings.getString("token", "hello"));
-                params.put("channelid",getIntent().getStringExtra("channelID"));
-                connexion.setParmetres(params);
-                connexion.setOnNewsUpdateListener(Chat.this);
-                connexion.execute();
-            }
-        },500,1000);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        FloatingActionButton fab = (FloatingActionButton)rootView.findViewById(R.id.fab);
         //envoie message
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View rootView) {
                 connexion = new Connexion("http://www.raphaelbischof.fr/messaging/?function=sendmessage");
                 HashMap<String,String> params = new HashMap<String, String>();
-                SharedPreferences settings = getSharedPreferences(LoginActivity.STOCKAGE, 0);
+                SharedPreferences settings = getActivity().getSharedPreferences(LoginActivity.STOCKAGE, 0);
                 params.put("accesstoken", settings.getString("token", "hello"));
-                params.put("channelid",getIntent().getStringExtra("channelID"));
+
+                params.put("channelid",channelID);
+
                 params.put("message",message.getText().toString());
 
+                System.out.println("---------------------------------------------------------------------");
+                System.out.println(params);
                 message.setText("");
                 connexion.setParmetres(params);
                 connexion.execute();
             }
         });
 
-        final FloatingActionButton photo = (FloatingActionButton) findViewById(R.id.imageSend);
+        final FloatingActionButton photo = (FloatingActionButton) rootView.findViewById(R.id.imageSend);
         photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -157,12 +155,12 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
                 }
 
                 try{
-                    resizeFile(test,getApplicationContext());
+                    resizeFile(test,getActivity().getApplicationContext());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 // Android a depuis Android Nougat besoin d'un provider pour donner l'accès à un répertoire pour une autre app, cf : http://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed
-                Uri uri = FileProvider.getUriForFile(Chat.this, Chat.this.getApplicationContext().getPackageName() + ".provider", test);
+                Uri uri = FileProvider.getUriForFile(MessageFragment.this.getActivity(), MessageFragment.this.getActivity().getApplicationContext().getPackageName() + ".provider", test);
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //Création de l’appelà l’application appareil photo pour récupérer une image
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, uri); //Emplacement de l’image stockée
                 startActivityForResult(intent, PICTURE_REQUEST_CODE);
@@ -171,11 +169,52 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
             }
         });
 
+
+
+        return rootView;
     }
+    private Connexion connexion;
+    private ListView messagesListView;
+    private EditText message;
+    private ArrayList<Message> messagesBackup = new ArrayList<>();
+    private MessageAdapter adapter;
+    private final int PICTURE_REQUEST_CODE = 0;
+
+
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if(getActivity() !=null){
+                    connexion = new Connexion("http://www.raphaelbischof.fr/messaging/?function=getmessages");
+
+                    HashMap<String,String> params = new HashMap<String, String>();
+                    SharedPreferences settings = getActivity().getSharedPreferences(LoginActivity.STOCKAGE, 0);
+                    params.put("accesstoken", settings.getString("token", "hello"));
+
+                    params.put("channelid",channelID);
+
+
+                    connexion.setParmetres(params);
+                    connexion.setOnNewsUpdateListener(MessageFragment.this);
+                    connexion.execute();
+                }
+            }
+        },500,1000);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode)
@@ -185,29 +224,29 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
 
             case PICTURE_REQUEST_CODE :
 
-                SharedPreferences settings = getSharedPreferences(LoginActivity.STOCKAGE, 0);
+                SharedPreferences settings = getActivity().getSharedPreferences(LoginActivity.STOCKAGE, 0);
 
 
                 List<NameValuePair> values = new ArrayList<NameValuePair>();
                 values.add(new BasicNameValuePair("accesstoken",settings.getString("token","")));
-                values.add(new BasicNameValuePair("channelid",getIntent().getStringExtra("channelID")));
+                values.add(new BasicNameValuePair("channelid",getActivity().getIntent().getStringExtra("channelID")));
                 File test = new File(Environment.getExternalStorageDirectory()+"/Chat/img/img.jpg");
                 try{
-                    resizeFile(test,getApplicationContext());
+                    resizeFile(test,getActivity().getApplicationContext());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                new UploadFileToServer(Chat.this,test.getPath() , values, new UploadFileToServer.OnUploadFileListener() {
+                new UploadFileToServer((Chat)getActivity(),test.getPath() , values, new UploadFileToServer.OnUploadFileListener() {
                     @Override
                     public void onResponse(String result) {
-                        Toast.makeText(getApplicationContext(),"Upload réussie",Toast.LENGTH_LONG);
+                        Toast.makeText(getActivity(),"Upload réussie",Toast.LENGTH_LONG);
                     }
                     @Override
                     public void onFailed(IOException error) {
-                        Toast.makeText(getApplicationContext(),"upload failed",Toast.LENGTH_LONG);
+                        Toast.makeText(getActivity(),"upload failed",Toast.LENGTH_LONG);
                     }
                 }).execute();
-                final FloatingActionButton photo = (FloatingActionButton) findViewById(R.id.imageSend);
+                final FloatingActionButton photo = (FloatingActionButton) getActivity().findViewById(R.id.imageSend);
                 photo.setEnabled(true);
 
         }
@@ -292,6 +331,9 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
         return rotate;
     }
 
+    public void getChannelID(String id){
+        this.channelID = id;
+    }
 
 
 

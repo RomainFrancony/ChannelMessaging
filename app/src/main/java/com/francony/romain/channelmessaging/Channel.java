@@ -2,6 +2,8 @@ package com.francony.romain.channelmessaging;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,6 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.francony.romain.channelmessaging.fragments.ChannelListFragment;
+import com.francony.romain.channelmessaging.fragments.MessageFragment;
 import com.google.gson.Gson;
 
 import java.lang.reflect.Array;
@@ -26,67 +30,49 @@ import java.util.TimerTask;
 
 public class Channel extends AppCompatActivity implements OnDowloadCompleteListener, AdapterView.OnItemClickListener {
 
-    private String token;
-    private Connexion connexion;
-    private ListView listView;
-    private FloatingActionButton fab;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        int display_mode = getResources().getConfiguration().orientation;
 
-        setContentView(R.layout.activity_channel);
+        if (display_mode == Configuration.ORIENTATION_PORTRAIT) {
 
-
-
-        fab =(FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),Friend.class);
-                startActivity(intent);
-            }
-        });
-
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        listView = (ListView) findViewById(R.id.channels);
-        listView.setOnItemClickListener(this);
-
-
-        new Timer().scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                connexion = new Connexion("http://www.raphaelbischof.fr/messaging/?function=getchannels");
-                HashMap<String,String> params = new HashMap<>();
-                SharedPreferences settings = getSharedPreferences(LoginActivity.STOCKAGE, 0);
-                params.put("accesstoken", settings.getString("token", "hello"));
-                connexion.setParmetres(params);
-                connexion.setOnNewsUpdateListener(Channel.this);
-                connexion.execute();
-            }
-        },500,1000);
-
+            setContentView(R.layout.activity_channel);
+        } else {
+            setContentView(R.layout.chat_land);
+        }
     }
 
     @Override
     public void onDownloadComplete(String content) {
         Gson gson = new Gson();
         Channels listeChannels = gson.fromJson(content,Channels.class);
-        listView.setAdapter(new ListeArrayAdapter(getApplicationContext(),listeChannels.getChannels()));
+        ChannelListFragment fragA = (ChannelListFragment)getSupportFragmentManager().findFragmentById(R.id.fragmentChannel);
+        fragA.listView.setAdapter(new ListeArrayAdapter(getApplicationContext(),listeChannels.getChannels()));
+
     }
 
 
-    //On click item
+
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        ChannelListFragment fragA = (ChannelListFragment)getSupportFragmentManager().findFragmentById(R.id.fragmentChannel);
+        MessageFragment fragB = (MessageFragment)getSupportFragmentManager().findFragmentById(R.id.fragmentMessage);
         TextView idText = (TextView) view.findViewById(R.id.idChannel) ;
         ChannelClass channel = (ChannelClass) idText.getTag();
-        Intent intent = new Intent(getApplicationContext(),Chat.class);
-        intent.putExtra("channelID",channel.getChannelID());
-        intent.putExtra("channelName",channel.getName());
-        startActivity(intent);
+        if(fragB == null|| !fragB.isInLayout()){
+            Intent i = new Intent(getApplicationContext(),Chat.class);
+            i.putExtra("channelID",channel.getChannelID());
+            i.putExtra("channelName",channel.getName());
+            startActivity(i);
+        } else {
+            fragB.getChannelID(channel.getChannelID());
+        }
     }
+
+
 }

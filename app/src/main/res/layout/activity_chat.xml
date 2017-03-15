@@ -18,46 +18,18 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="Chatzazae" />
+            app:title="Chat" />
 
     </android.support.design.widget.AppBarLayout>
 
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_menu_send" />
+<fragment
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fragmentMessage"
+    class="com.francony.romain.channelmessaging.fragments.MessageFragment"
+    tools:layout="@layout/fragment_message">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/imageSend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_menu_gallery" />
-
-    <ListView
-        android:layout_width="match_parent"
-        android:transcriptMode="alwaysScroll"
-        android:stackFromBottom="true"
-        android:layout_height="453dp"
-        android:layout_gravity="center_vertical"
-        android:id="@+id/listMessages" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textCapSentences|textAutoCorrect"
-        android:ems="10"
-        android:id="@+id/message"
-        android:gravity="bottom|center_vertical"
-        android:layout_gravity="bottom|start"
-        android:layout_marginBottom="25px"
-        android:hint="Your message..."
-        android:layout_marginLeft="150px"
-        android:layout_marginRight="150px" />
+</fragment>
 
 </android.support.design.widget.CoordinatorLayout>
