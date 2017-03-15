@@ -40,6 +40,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/txtLogin"
             android:textColor="@color/white"
+            android:textColorHighlight="@color/white"
             android:paddingBottom="20dp"
             android:text="rfran" />
         </android.support.design.widget.TextInputLayout>

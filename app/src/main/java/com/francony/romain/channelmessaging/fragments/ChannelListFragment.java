@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import com.francony.romain.channelmessaging.ListeArrayAdapter;
 import com.francony.romain.channelmessaging.LoginActivity;
 import com.francony.romain.channelmessaging.OnDowloadCompleteListener;
 import com.francony.romain.channelmessaging.R;
+import com.francony.romain.channelmessaging.SoundRecordDialog;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -68,7 +70,6 @@ public class ChannelListFragment extends Fragment {
     public ListView listView;
     public FloatingActionButton fab;
 
-
     public ChannelListFragment() {
         // Required empty public constructor
     }
@@ -80,6 +81,7 @@ public class ChannelListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_channel_list, container, false);
         fab =(FloatingActionButton) v.findViewById(R.id.fab);
 
+
         listView = (ListView) v.findViewById(R.id.channels);
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +91,8 @@ public class ChannelListFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+
 
 
         listView.setOnItemClickListener((Channel)getActivity());

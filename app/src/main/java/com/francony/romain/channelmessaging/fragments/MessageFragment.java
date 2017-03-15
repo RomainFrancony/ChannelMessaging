@@ -17,6 +17,7 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.Toolbar;
@@ -36,6 +37,7 @@ import com.francony.romain.channelmessaging.MessageAdapter;
 import com.francony.romain.channelmessaging.Messages;
 import com.francony.romain.channelmessaging.OnDowloadCompleteListener;
 import com.francony.romain.channelmessaging.R;
+import com.francony.romain.channelmessaging.SoundRecordDialog;
 import com.francony.romain.channelmessaging.UploadFileToServer;
 import com.francony.romain.channelmessaging.UserDataSource;
 import com.google.gson.Gson;
@@ -53,6 +55,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.jar.Manifest;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -180,6 +183,7 @@ public class MessageFragment extends Fragment implements OnDowloadCompleteListen
     private MessageAdapter adapter;
     private final int PICTURE_REQUEST_CODE = 0;
 
+    private FloatingActionButton soundFab;
 
 
 
@@ -214,6 +218,16 @@ public class MessageFragment extends Fragment implements OnDowloadCompleteListen
                 }
             }
         },500,1000);
+
+
+        soundFab =(FloatingActionButton) getView().findViewById(R.id.soundFab);
+        soundFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment newFragment = new SoundRecordDialog();
+                newFragment.show(getFragmentManager(), "sound");
+            }
+        });
     }
 
     @Override
