@@ -20,6 +20,16 @@ public class Message {
     private String date;
     private String imageUrl;
 
+    public String getSoundUrl() {
+        return soundUrl;
+    }
+
+    public void setSoundUrl(String soundUrl) {
+        this.soundUrl = soundUrl;
+    }
+
+    private String soundUrl;
+
     public String getMessageImageUrl() {
         return messageImageUrl;
     }

@@ -1,19 +1,9 @@
 package com.francony.romain.channelmessaging;
 
-import android.Manifest;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Environment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,15 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import org.w3c.dom.Text;
-
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -55,7 +37,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         if (message.getMessageImageUrl().equals("")) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.message_item, parent, false);
         }else{
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_massage_img, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_message_img, parent, false);
         }
 
 
@@ -72,12 +54,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
             }else{
                 new GetImage(imgMessage).execute(message.getMessageImageUrl());
             }
-            /*Glide
-                    .with(context)
-                    .load(message.getMessageImageUrl())
-                    .centerCrop()
-                    .crossFade()
-                    .into(imgMessage);*/
+
         }
 
 

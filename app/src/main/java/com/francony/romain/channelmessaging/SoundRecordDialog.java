@@ -3,10 +3,12 @@ package com.francony.romain.channelmessaging;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
@@ -19,8 +21,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.Inflater;
 
 /**
@@ -36,7 +45,22 @@ public class SoundRecordDialog extends DialogFragment {
                     .setPositiveButton("Envoyer", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
 
+                            SharedPreferences settings = getActivity().getSharedPreferences(LoginActivity.STOCKAGE, 0);
 
+                            String path = getActivity().getExternalCacheDir().getAbsolutePath()+"/audiorecordtest.3gp";
+
+                            List<NameValuePair> values = new ArrayList<NameValuePair>();
+                            values.add(new BasicNameValuePair("accesstoken",settings.getString("token","")));
+                            values.add(new BasicNameValuePair("channelid",getActivity().getIntent().getStringExtra("channelID")));
+
+                            new UploadFileToServer(getActivity(),path , values, new UploadFileToServer.OnUploadFileListener() {
+                                @Override
+                                public void onResponse(String result) {
+                                }
+                                @Override
+                                public void onFailed(IOException error) {
+                                }
+                            }).execute();
 
 
 
