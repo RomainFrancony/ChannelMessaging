@@ -1,4 +1,4 @@
-package com.francony.romain.channelmessaging;
+package com.francony.romain.channelmessaging.task;
 
 /**
  * Created by franconr on 20/01/2017.

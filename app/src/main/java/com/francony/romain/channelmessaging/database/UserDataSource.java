@@ -1,4 +1,4 @@
-package com.francony.romain.channelmessaging;
+package com.francony.romain.channelmessaging.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,9 +6,11 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.francony.romain.channelmessaging.database.FriendsDB;
+import com.francony.romain.channelmessaging.model.User;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by franconr on 23/01/2017.
@@ -29,7 +31,7 @@ public class UserDataSource {
         dbHelper.close();
     }
 
-    public User createUser(int userid,String username,String imageurl) {
+    public User createUser(int userid, String username, String imageurl) {
         ContentValues values = new ContentValues();
         values.put(FriendsDB.KEY_USERID, userid);
         values.put(FriendsDB.KEY_USERNAME, username);

@@ -1,32 +1,21 @@
-package com.francony.romain.channelmessaging;
+package com.francony.romain.channelmessaging.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.francony.romain.channelmessaging.model.ChannelClass;
+import com.francony.romain.channelmessaging.model.Channels;
+import com.francony.romain.channelmessaging.adapter.ListeArrayAdapter;
+import com.francony.romain.channelmessaging.task.OnDowloadCompleteListener;
+import com.francony.romain.channelmessaging.R;
 import com.francony.romain.channelmessaging.fragments.ChannelListFragment;
 import com.francony.romain.channelmessaging.fragments.MessageFragment;
 import com.google.gson.Gson;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Channel extends AppCompatActivity implements OnDowloadCompleteListener, AdapterView.OnItemClickListener {
 

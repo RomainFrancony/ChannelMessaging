@@ -1,11 +1,6 @@
-package com.francony.romain.channelmessaging;
+package com.francony.romain.channelmessaging.task;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.os.Environment;
-import android.util.Log;
-import android.widget.ImageView;
 
 import java.io.BufferedInputStream;
 import java.io.File;

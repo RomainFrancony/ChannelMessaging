@@ -1,4 +1,4 @@
-package com.francony.romain.channelmessaging;
+package com.francony.romain.channelmessaging.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,8 +11,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.francony.romain.channelmessaging.task.GetImage;
+import com.francony.romain.channelmessaging.R;
+import com.francony.romain.channelmessaging.model.User;
+
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +26,7 @@ public class FriendAdapter extends ArrayAdapter<User> {
     private final List<User> values;
 
     public FriendAdapter(Context context, List<User> values){
-        super(context,R.layout.item_friend, values);
+        super(context, R.layout.item_friend, values);
         this.context = context;
         this.values = values;
     }

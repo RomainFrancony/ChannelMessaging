@@ -1,13 +1,14 @@
-package com.francony.romain.channelmessaging;
+package com.francony.romain.channelmessaging.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.francony.romain.channelmessaging.R;
+import com.francony.romain.channelmessaging.model.ChannelClass;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ public class ListeArrayAdapter extends ArrayAdapter<ChannelClass> {
     private final ArrayList<ChannelClass> values;
 
     public ListeArrayAdapter(Context context, ArrayList<ChannelClass> values){
-        super(context,R.layout.item_channel, values);
+        super(context, R.layout.item_channel, values);
         this.context = context;
         this.values = values;
     }

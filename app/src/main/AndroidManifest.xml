@@ -22,7 +22,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity"
+        <activity android:name=".activity.LoginActivity"
             android:theme="@style/navbarDark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,17 +31,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Channel"
+            android:name=".activity.Channel"
             android:label="@string/title_activity_channel"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Chat"
+            android:name=".activity.Chat"
             android:label="@string/title_activity_chat"
             android:theme="@style/romainFull"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".Friend" />
+        <activity android:name=".activity.Friend" />
         <activity
-            android:name=".MessagePrivate"
+            android:name=".activity.MessagePrivate"
             android:label="@string/title_activity_message_private"
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -56,7 +56,7 @@
         </provider>
 
         <activity
-            android:name=".GPSActivity"
+            android:name=".activity.GPSActivity"
             android:label="@string/title_activity_gps"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

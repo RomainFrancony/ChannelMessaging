@@ -1,4 +1,6 @@
-package com.francony.romain.channelmessaging;
+package com.francony.romain.channelmessaging.model;
+
+import com.francony.romain.channelmessaging.model.Message;
 
 import java.util.ArrayList;
 

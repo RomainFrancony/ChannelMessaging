@@ -1,11 +1,10 @@
-package com.francony.romain.channelmessaging;
+package com.francony.romain.channelmessaging.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +14,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import java.io.BufferedInputStream;
+import com.francony.romain.channelmessaging.task.GetImage;
+import com.francony.romain.channelmessaging.task.GetSound;
+import com.francony.romain.channelmessaging.task.OnDowloadCompleteListener;
+import com.francony.romain.channelmessaging.R;
+import com.francony.romain.channelmessaging.model.Message;
+
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 
 /**
@@ -34,7 +34,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
     private Button btnplay;
 
     public MessageAdapter(Context context, ArrayList<Message> values){
-        super(context,R.layout.item_channel, values);
+        super(context, R.layout.item_channel, values);
         this.context = context;
         this.values = values;
     }
@@ -54,14 +54,14 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 @Override
                 public void onClick(View v) {
                     final File soundFile = new File(Environment.getExternalStorageDirectory()+"/Chat/sound"+message.getSoundUrl().substring(message.getSoundUrl().lastIndexOf("/")));
-                     GetSound getter = new GetSound(message.getSoundUrl(),soundFile.getAbsolutePath());
+                     GetSound downloader = new GetSound(message.getSoundUrl(),soundFile.getAbsolutePath());
                     if(!soundFile.exists()){
-                        getter.execute();
+                        downloader.execute();
                     }else{
                         startPlaying(soundFile.getAbsolutePath());
                     }
 
-                    getter.setOnNewsUpdateListener(new OnDowloadCompleteListener() {
+                    downloader.setOnNewsUpdateListener(new OnDowloadCompleteListener() {
                         @Override
                         public void onDownloadComplete(String content) {
                             startPlaying(soundFile.getAbsolutePath());

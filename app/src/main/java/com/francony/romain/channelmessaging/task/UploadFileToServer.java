@@ -1,4 +1,4 @@
-package com.francony.romain.channelmessaging;
+package com.francony.romain.channelmessaging.task;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

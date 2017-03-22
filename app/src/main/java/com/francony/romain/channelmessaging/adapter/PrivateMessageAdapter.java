@@ -1,23 +1,21 @@
-package com.francony.romain.channelmessaging;
+package com.francony.romain.channelmessaging.adapter;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Environment;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.francony.romain.channelmessaging.task.GetImage;
+import com.francony.romain.channelmessaging.model.PrivateMessageClass;
+import com.francony.romain.channelmessaging.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,7 +30,7 @@ public class PrivateMessageAdapter extends ArrayAdapter<PrivateMessageClass> {
 
 
     public PrivateMessageAdapter(Context context, ArrayList<PrivateMessageClass> values){
-        super(context,R.layout.message_item, values);
+        super(context, R.layout.message_item, values);
         this.context = context;
         this.values = values;
     }

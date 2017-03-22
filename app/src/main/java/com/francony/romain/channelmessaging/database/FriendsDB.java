@@ -1,4 +1,4 @@
-package com.francony.romain.channelmessaging;
+package com.francony.romain.channelmessaging.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

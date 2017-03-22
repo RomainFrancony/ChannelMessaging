@@ -1,13 +1,6 @@
-package com.francony.romain.channelmessaging;
+package com.francony.romain.channelmessaging.task;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

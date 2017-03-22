@@ -1,14 +1,16 @@
-package com.francony.romain.channelmessaging;
+package com.francony.romain.channelmessaging.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import java.util.HashMap;
+import com.francony.romain.channelmessaging.adapter.FriendAdapter;
+import com.francony.romain.channelmessaging.R;
+import com.francony.romain.channelmessaging.database.UserDataSource;
+import com.francony.romain.channelmessaging.model.User;
 
 public class Friend extends AppCompatActivity {
     private GridView gridUser;

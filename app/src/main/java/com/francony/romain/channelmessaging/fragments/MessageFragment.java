@@ -14,7 +14,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
@@ -29,17 +28,15 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.francony.romain.channelmessaging.Chat;
-import com.francony.romain.channelmessaging.Connexion;
-import com.francony.romain.channelmessaging.LoginActivity;
-import com.francony.romain.channelmessaging.Message;
-import com.francony.romain.channelmessaging.MessageAdapter;
-import com.francony.romain.channelmessaging.Messages;
-import com.francony.romain.channelmessaging.OnDowloadCompleteListener;
+import com.francony.romain.channelmessaging.task.Connexion;
+import com.francony.romain.channelmessaging.activity.LoginActivity;
+import com.francony.romain.channelmessaging.model.Message;
+import com.francony.romain.channelmessaging.adapter.MessageAdapter;
+import com.francony.romain.channelmessaging.model.Messages;
+import com.francony.romain.channelmessaging.task.OnDowloadCompleteListener;
 import com.francony.romain.channelmessaging.R;
-import com.francony.romain.channelmessaging.SoundRecordDialog;
-import com.francony.romain.channelmessaging.UploadFileToServer;
-import com.francony.romain.channelmessaging.UserDataSource;
+import com.francony.romain.channelmessaging.task.UploadFileToServer;
+import com.francony.romain.channelmessaging.database.UserDataSource;
 import com.google.gson.Gson;
 
 import org.apache.http.NameValuePair;
@@ -55,7 +52,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.jar.Manifest;
 
 /**
  * A simple {@link Fragment} subclass.

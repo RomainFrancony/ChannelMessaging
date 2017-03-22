@@ -5,28 +5,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.francony.romain.channelmessaging.Channel;
-import com.francony.romain.channelmessaging.Channels;
-import com.francony.romain.channelmessaging.Connexion;
-import com.francony.romain.channelmessaging.Friend;
-import com.francony.romain.channelmessaging.ListeArrayAdapter;
-import com.francony.romain.channelmessaging.LoginActivity;
-import com.francony.romain.channelmessaging.OnDowloadCompleteListener;
+import com.francony.romain.channelmessaging.activity.Channel;
+import com.francony.romain.channelmessaging.task.Connexion;
+import com.francony.romain.channelmessaging.activity.Friend;
+import com.francony.romain.channelmessaging.activity.LoginActivity;
 import com.francony.romain.channelmessaging.R;
-import com.francony.romain.channelmessaging.SoundRecordDialog;
-import com.google.gson.Gson;
 
 import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * A simple {@link Fragment} subclass.

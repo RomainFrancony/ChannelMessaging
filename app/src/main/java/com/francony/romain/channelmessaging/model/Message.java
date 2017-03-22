@@ -1,4 +1,4 @@
-package com.francony.romain.channelmessaging;
+package com.francony.romain.channelmessaging.model;
 
 /**
  * Created by Romain on 21/01/2017.

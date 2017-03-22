@@ -1,4 +1,4 @@
-package com.francony.romain.channelmessaging;
+package com.francony.romain.channelmessaging.activity;
 
 import android.Manifest;
 import android.animation.Animator;
@@ -7,11 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Handler;
-import android.provider.Settings;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,13 +17,16 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.dynamitechetan.flowinggradient.FlowingGradientClass;
+import com.francony.romain.channelmessaging.task.Connexion;
+import com.francony.romain.channelmessaging.task.OnDowloadCompleteListener;
+import com.francony.romain.channelmessaging.R;
+import com.francony.romain.channelmessaging.model.Response;
 import com.google.gson.Gson;
 
 import java.util.HashMap;

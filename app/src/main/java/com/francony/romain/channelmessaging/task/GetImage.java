@@ -1,4 +1,4 @@
-package com.francony.romain.channelmessaging;
+package com.francony.romain.channelmessaging.task;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
