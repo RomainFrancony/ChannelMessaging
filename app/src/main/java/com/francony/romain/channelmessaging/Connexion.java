@@ -104,8 +104,7 @@ public class Connexion extends AsyncTask<Void,Integer, String> {
     }
 
 
-    private String getPostDataString(HashMap<String, String> params) throws
-            UnsupportedEncodingException {
+    private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
         boolean first = true;
         for(Map.Entry<String, String> entry : params.entrySet()){

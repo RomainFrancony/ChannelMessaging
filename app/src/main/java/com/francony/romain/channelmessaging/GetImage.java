@@ -43,6 +43,7 @@ public class GetImage extends AsyncTask<String,Void,Bitmap> {
             InputStream in = new java.net.URL(url).openStream();
             imageRetour = BitmapFactory.decodeStream(in);
         } catch (Exception e) {
+
             Log.e("Error", e.getMessage());
             e.printStackTrace();
         }
@@ -67,6 +68,7 @@ public class GetImage extends AsyncTask<String,Void,Bitmap> {
                     out.close();
                 }
             } catch (IOException e) {
+
                 e.printStackTrace();
             }
         }

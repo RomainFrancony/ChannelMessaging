@@ -16,6 +16,19 @@ public class Message {
         this.username = username;
     }
 
+    @Override
+    public String toString() {
+        return "Message{" +
+                "userID=" + userID +
+                ", username='" + username + '\'' +
+                ", message='" + message + '\'' +
+                ", date='" + date + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", soundUrl='" + soundUrl + '\'' +
+                ", messageImageUrl='" + messageImageUrl + '\'' +
+                '}';
+    }
+
     private String message;
     private String date;
     private String imageUrl;

@@ -15,8 +15,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 /**
@@ -26,6 +31,7 @@ import java.util.ArrayList;
 public class MessageAdapter extends ArrayAdapter<Message> {
     private final Context context;
     private final ArrayList<Message> values;
+    private Button btnplay;
 
     public MessageAdapter(Context context, ArrayList<Message> values){
         super(context,R.layout.item_channel, values);
@@ -36,25 +42,40 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-       final  Message message = getItem(position);
-
-
+        final  Message message = getItem(position);
 
 
         if(!message.getSoundUrl().equals("")){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_message_sound, parent, false);
 
 
-            Button btnplay =(Button) convertView.findViewById(R.id.btnPlayMessage);
+            btnplay =(Button) convertView.findViewById(R.id.btnPlayMessage);
             btnplay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    final File soundFile = new File(Environment.getExternalStorageDirectory()+"/Chat/sound"+message.getSoundUrl().substring(message.getSoundUrl().lastIndexOf("/")));
+                     GetSound getter = new GetSound(message.getSoundUrl(),soundFile.getAbsolutePath());
+                    if(!soundFile.exists()){
+                        getter.execute();
+                    }else{
+                        startPlaying(soundFile.getAbsolutePath());
+                    }
+
+                    getter.setOnNewsUpdateListener(new OnDowloadCompleteListener() {
+                        @Override
+                        public void onDownloadComplete(String content) {
+                            startPlaying(soundFile.getAbsolutePath());
+                        }
+                    });
+
+
 
                 }
             });
 
 
-        }else if(message.getImageUrl().equals("")){
+        }
+        if(!message.getMessageImageUrl().equals("")){
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_message_img, parent, false);
                 ImageView imgMessage = (ImageView) convertView.findViewById(R.id.imgMessage);
                 File imgFile = new File(Environment.getExternalStorageDirectory()+"/Chat/img"+message.getMessageImageUrl().substring(message.getMessageImageUrl().lastIndexOf("/")));
@@ -64,17 +85,12 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 }else{
                     new GetImage(imgMessage).execute(message.getMessageImageUrl());
                 }
-
-            }else{
+        }
+        if(message.getMessageImageUrl().equals("") && message.getSoundUrl().equals("")){
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.message_item, parent, false);
                 TextView messageView = (TextView) convertView.findViewById(R.id.message);
                 messageView.setText(message.getMessage());
-            }
-
-
-
-
-
+        }
 
         TextView name = (TextView) convertView.findViewById(R.id.username);
         ImageView img = (ImageView) convertView.findViewById(R.id.img);
@@ -97,6 +113,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
     private MediaPlayer mPlayer;
     private void startPlaying(String mFileName) {
+        btnplay.setText("STOP");
         mPlayer = new MediaPlayer();
         try {
             mPlayer.setDataSource(mFileName);
@@ -105,7 +122,17 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         } catch (IOException e) {
 
         }
+
+
+        mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                btnplay.setText("PLAY");
+            }
+        });
     }
+
+
 
 
 
