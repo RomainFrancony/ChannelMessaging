@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -213,11 +214,12 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
 
     @Override
     public void onDownloadComplete(String content) {
+
         Gson gson = new Gson();
         Messages messages = null;
 
 
-
+    try{
         messages = gson.fromJson(content,Messages.class);
         Collections.reverse(messages.getMessages());
         if(!this.messagesBackup.getMessages().equals(messages.getMessages())){
@@ -226,6 +228,11 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
             adapter.notifyDataSetChanged();
         }
         this.messagesBackup =  messages;
+    }catch (Exception e ){
+        Toast.makeText(getApplicationContext(),"Erreur lors du chargement.",Toast.LENGTH_LONG);
+    }
+
+
 
 
     }

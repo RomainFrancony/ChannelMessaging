@@ -45,7 +45,12 @@ public class Connexion extends AsyncTask<Void,Integer, String> {
 
     @Override
     protected String doInBackground(Void...arg0) {
-       return performPostCall(this.URL,this.parmetres);
+        try{
+            return performPostCall(this.URL,this.parmetres);
+        }catch (Exception e){
+            return null;
+        }
+
     }
 
 

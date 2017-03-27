@@ -175,7 +175,7 @@ public class MessageFragment extends Fragment implements OnDowloadCompleteListen
     private Connexion connexion;
     private ListView messagesListView;
     private EditText message;
-    private ArrayList<Message> messagesBackup = new ArrayList<>();
+    private Messages messagesBackup = new Messages();
     private MessageAdapter adapter;
     private final int PICTURE_REQUEST_CODE = 0;
 
@@ -252,11 +252,11 @@ public class MessageFragment extends Fragment implements OnDowloadCompleteListen
                 new UploadFileToServer(getActivity(),test.getPath() , values, new UploadFileToServer.OnUploadFileListener() {
                     @Override
                     public void onResponse(String result) {
-                        Toast.makeText(getActivity(),"Upload réussie",Toast.LENGTH_LONG);
+                        Toast.makeText(getActivity(),"Upload réussie",Toast.LENGTH_LONG).show();
                     }
                     @Override
                     public void onFailed(IOException error) {
-                        Toast.makeText(getActivity(),"upload failed",Toast.LENGTH_LONG);
+                        Toast.makeText(getActivity(),"Upload failed",Toast.LENGTH_LONG).show();
                     }
                 }).execute();
                 final FloatingActionButton photo = (FloatingActionButton) getActivity().findViewById(R.id.imageSend);
@@ -269,15 +269,21 @@ public class MessageFragment extends Fragment implements OnDowloadCompleteListen
     @Override
     public void onDownloadComplete(String content) {
         Gson gson = new Gson();
-        Messages messages = gson.fromJson(content,Messages.class);
-        Collections.reverse(messages.getMessages());
-        if(!this.messagesBackup.equals(messages.getMessages())){
-            adapter.clear();
-            adapter.addAll(messages.getMessages());
-            adapter.notifyDataSetChanged();
+        Messages messages = null;
+
+
+        try{
+            messages = gson.fromJson(content,Messages.class);
+            Collections.reverse(messages.getMessages());
+            if(!this.messagesBackup.getMessages().equals(messages.getMessages())){
+                adapter.clear();
+                adapter.addAll(messages.getMessages());
+                adapter.notifyDataSetChanged();
+            }
+            this.messagesBackup =  messages;
+        }catch (Exception e ){
+            Toast.makeText(getActivity(),"Erreur lors du chargement.",Toast.LENGTH_LONG).show();
         }
-        Messages messages2 = gson.fromJson(content,Messages.class);
-        this.messagesBackup =  messages2.getMessages();
 
 
     }
