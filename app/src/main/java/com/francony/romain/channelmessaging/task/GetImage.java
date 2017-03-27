@@ -58,6 +58,8 @@ public class GetImage extends AsyncTask<String,Void,Bitmap> {
 
         FileOutputStream out = null;
         try {
+            File file = new File(Environment.getExternalStorageDirectory()+"/Chat/img");
+            file.mkdir();
             out = new FileOutputStream(Environment.getExternalStorageDirectory()+"/Chat/img"+this.url.substring(this.url.lastIndexOf("/")));
             result.compress(Bitmap.CompressFormat.JPEG, 100, out);
         } catch (Exception e) {

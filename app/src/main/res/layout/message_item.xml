@@ -7,7 +7,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:minHeight="120px">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -37,7 +37,7 @@
             <TextView
                 android:text="TextView"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:id="@+id/message"
                 android:textColor="@android:color/black"
                 android:minHeight="96dp"

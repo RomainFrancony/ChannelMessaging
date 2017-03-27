@@ -54,7 +54,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 @Override
                 public void onClick(View v) {
                     final File soundFile = new File(Environment.getExternalStorageDirectory()+"/Chat/sound"+message.getSoundUrl().substring(message.getSoundUrl().lastIndexOf("/")));
-                     GetSound downloader = new GetSound(message.getSoundUrl(),soundFile.getAbsolutePath());
+                    soundFile.mkdir();
+                    GetSound downloader = new GetSound(message.getSoundUrl(),soundFile.getAbsolutePath());
                     if(!soundFile.exists()){
                         downloader.execute();
                     }else{
@@ -79,6 +80,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_message_img, parent, false);
                 ImageView imgMessage = (ImageView) convertView.findViewById(R.id.imgMessage);
                 File imgFile = new File(Environment.getExternalStorageDirectory()+"/Chat/img"+message.getMessageImageUrl().substring(message.getMessageImageUrl().lastIndexOf("/")));
+                imgFile.mkdir();
                 if(imgFile.exists()){
                     Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                     imgMessage.setImageBitmap(myBitmap);
@@ -100,7 +102,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
         name.setText(message.getUsername());
         File imgFile = new File(Environment.getExternalStorageDirectory()+"/Chat/img"+message.getImageUrl().substring(message.getImageUrl().lastIndexOf("/")));
-
+        imgFile.mkdir();
         if(imgFile.exists()){
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             img.setImageBitmap(myBitmap);
