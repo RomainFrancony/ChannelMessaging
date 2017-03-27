@@ -181,11 +181,17 @@ public class LoginActivity extends AppCompatActivity implements OnDowloadComplet
     @Override
     public void onDownloadComplete(String content) {
         Gson gson = new Gson();
-        Response retour = gson.fromJson(content,Response.class);
+        Response retour = null;
+        try {
+            retour = gson.fromJson(content, Response.class);
+        }catch(Exception e) {
+            Snackbar mySnackbar = Snackbar.make(findViewById(R.id.container),"Connexion échoué", Snackbar.LENGTH_SHORT);
+            mySnackbar.setAction("Réessayer!", mListener);
+            mySnackbar.show();
+        }
 
 
-
-        if(retour.getResponse().equals("Ok")){
+        if(retour != null && retour.getResponse().equals("Ok")){
             Toast.makeText(getApplicationContext(), "Connexion réussie", Toast.LENGTH_SHORT).show();
 
             SharedPreferences settings = getSharedPreferences(STOCKAGE, 0);
@@ -205,4 +211,6 @@ public class LoginActivity extends AppCompatActivity implements OnDowloadComplet
 
         btnconnect.clearAnimation();
     }
+
+
 }

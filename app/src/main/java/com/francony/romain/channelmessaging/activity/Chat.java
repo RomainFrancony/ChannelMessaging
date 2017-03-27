@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -52,7 +53,7 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
     private Connexion connexion;
     private ListView messagesListView;
     private EditText message;
-    private ArrayList<Message> messagesBackup = new ArrayList<>();
+    private Messages messagesBackup = new Messages();
     private MessageAdapter adapter;
     private final int PICTURE_REQUEST_CODE = 0;
 
@@ -213,15 +214,18 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
     @Override
     public void onDownloadComplete(String content) {
         Gson gson = new Gson();
-        Messages messages = gson.fromJson(content,Messages.class);
+        Messages messages = null;
+
+
+
+        messages = gson.fromJson(content,Messages.class);
         Collections.reverse(messages.getMessages());
-        if(!this.messagesBackup.equals(messages.getMessages())){
+        if(!this.messagesBackup.getMessages().equals(messages.getMessages())){
             adapter.clear();
             adapter.addAll(messages.getMessages());
             adapter.notifyDataSetChanged();
         }
-        Messages messages2 = gson.fromJson(content,Messages.class);
-        this.messagesBackup =  messages2.getMessages();
+        this.messagesBackup =  messages;
 
 
     }
@@ -287,6 +291,8 @@ public class Chat extends AppCompatActivity implements OnDowloadCompleteListener
         }
         return rotate;
     }
+
+
 
 
 

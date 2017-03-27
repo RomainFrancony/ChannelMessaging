@@ -3,6 +3,7 @@ package com.francony.romain.channelmessaging.activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -38,9 +39,17 @@ public class Channel extends AppCompatActivity implements OnDowloadCompleteListe
     @Override
     public void onDownloadComplete(String content) {
         Gson gson = new Gson();
-        Channels listeChannels = gson.fromJson(content,Channels.class);
-        ChannelListFragment fragA = (ChannelListFragment)getSupportFragmentManager().findFragmentById(R.id.fragmentChannel);
-        fragA.listView.setAdapter(new ListeArrayAdapter(getApplicationContext(),listeChannels.getChannels()));
+        Channels listeChannels = null;
+        try{
+            listeChannels = gson.fromJson(content,Channels.class);
+            ChannelListFragment fragA = (ChannelListFragment)getSupportFragmentManager().findFragmentById(R.id.fragmentChannel);
+            fragA.listView.setAdapter(new ListeArrayAdapter(getApplicationContext(),listeChannels.getChannels()));
+        }catch(Exception e){
+            Snackbar mySnackbar = Snackbar.make(findViewById(R.id.container),"Erreur lors du chargement", Snackbar.LENGTH_SHORT);
+            mySnackbar.show();
+        }
+
+
 
     }
 

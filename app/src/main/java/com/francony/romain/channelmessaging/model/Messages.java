@@ -18,4 +18,15 @@ public class Messages {
     public void setMessages(ArrayList<Message> messages) {
         this.messages = messages;
     }
+
+
+
+    @Override
+    public int hashCode() {
+        return messages != null ? messages.hashCode() : 0;
+    }
+
+    public Messages(){
+        this.messages = new ArrayList<Message>();
+    }
 }

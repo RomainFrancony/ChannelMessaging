@@ -84,4 +84,21 @@ public class Message {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Message message1 = (Message) o;
+
+        if (userID != message1.userID) return false;
+        if (message != null ? !message.equals(message1.message) : message1.message != null)
+            return false;
+        if (date != null ? !date.equals(message1.date) : message1.date != null) return false;
+        if (imageUrl != null ? !imageUrl.equals(message1.imageUrl) : message1.imageUrl != null)
+            return false;
+        return username != null ? username.equals(message1.username) : message1.username == null;
+
+    }
 }
